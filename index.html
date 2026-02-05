@@ -1,50 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BAWF Morphological Database</title>
   <style>
     body {
       margin: 0;
       padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
-    }
-    h1 {
-      color: #2c3e50;
-      margin-bottom: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
     }
     .container {
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
+    }
+    h1 {
+      margin-top: 0;
+      color: #111827;
+    }
+    .description {
+      margin: 8px 0 24px 0;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+    .note {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 4px;
+      font-size: 0.95em;
     }
     iframe {
       width: 100%;
-      height: 90vh;
-      border: 1px solid #ccc;
+      height: 85vh;
+      border: 1px solid #d1d5db;
       border-radius: 6px;
       background: white;
-    }
-    .note {
-      margin-top: 15px;
-      color: #555;
-      font-size: 0.95em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>BAWF Morphological Database (View-only)</h1>
-    <p class="note">
-      This is a read-only view. You can scroll and use the download button in the top-right corner to get the full file.
-    </p>
+    <h1>BAWF Morphological Database</h1>
+
+    <div class="description">
+      View-only version of the morphological database (draft).<br>
+      Scroll through the table, use the zoom controls if needed, and download the full file using the button in the top-right corner of the embedded view.
+    </div>
+
+    <div class="note">
+      <strong>Note:</strong> This is a read-only view. You cannot sort, filter or edit the data here.<br>
+      For full interactivity (sorting, filtering, etc.) download the Excel file or contact the maintainer.
+    </div>
 
     <iframe 
       src="https://hkuhk-my.sharepoint.com/personal/cgreen_hku_hk/_layouts/15/Doc.aspx?sourcedoc={79206356-7357-42c6-9384-70649b6c2bf9}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True"
       frameborder="0"
-      scrolling="yes">
+      scrolling="yes"
+      allowfullscreen>
     </iframe>
   </div>
+
 </body>
 </html>
