@@ -9,85 +9,116 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f9fafb;
+      background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
       color: #111827;
+      min-height: 100vh;
     }
     .container {
       max-width: 1800px;
       margin: 0 auto;
-      padding: 24px 32px;
+      padding: 32px 24px;
     }
     header {
-      margin-bottom: 32px;
+      text-align: center;
+      margin-bottom: 40px;
     }
     h1 {
-      margin: 0 0 8px 0;
-      font-size: 2.4rem;
+      margin: 0 0 12px 0;
+      font-size: 2.8rem;
       color: #1d4ed8;
+      font-weight: 700;
     }
     .tagline {
+      font-size: 1.25rem;
       color: #4b5563;
-      font-size: 1.1rem;
       max-width: 900px;
+      margin: 0 auto;
     }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin: 24px 0 32px 0;
+    .download-btn {
+      display: inline-flex;
       align-items: center;
-    }
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
+      gap: 12px;
+      padding: 16px 36px;
+      font-size: 1.25rem;
+      font-weight: 600;
       background: #1d4ed8;
       color: white;
       text-decoration: none;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: background 0.2s;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+      transition: all 0.2s ease;
+      margin: 28px auto;
+      border: none;
+      cursor: pointer;
     }
-    .btn:hover {
+    .download-btn:hover {
       background: #1e40af;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(29, 78, 216, 0.35);
     }
     .info-card {
-      background: #eff6ff;
-      border-left: 4px solid #3b82f6;
-      padding: 16px 20px;
-      border-radius: 6px;
-      margin: 24px 0;
-      font-size: 0.98rem;
+      background: white;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin: 32px 0 40px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border-left: 5px solid #3b82f6;
     }
-    .info-card strong {
-      color: #1e40af;
+    .info-card h3 {
+      margin: 0 0 16px 0;
+      font-size: 1.4rem;
+      color: #1d4ed8;
+    }
+    .info-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .info-card li {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 12px;
+    }
+    .info-card li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-weight: bold;
     }
     iframe {
       width: 100%;
-      height: 88vh;
-      min-height: 720px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
+      height: 92vh;
+      min-height: 800px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
       background: white;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
     }
     footer {
-      margin-top: 40px;
+      margin-top: 48px;
       text-align: center;
       color: #6b7280;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      padding: 20px 0;
     }
-    @media (max-width: 900px) {
-      .container { padding: 16px; }
+    @media (max-width: 1024px) {
+      .container { padding: 24px 16px; }
+      h1 { font-size: 2.3rem; }
+      iframe { height: 85vh; min-height: 600px; }
+    }
+    @media (max-width: 768px) {
       h1 { font-size: 2rem; }
-      iframe { height: 80vh; min-height: 500px; }
-      .controls { flex-direction: column; align-items: flex-start; }
+      .download-btn { font-size: 1.1rem; padding: 14px 28px; }
+      .info-card { padding: 20px; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-
     <header>
       <h1>BAWF Morphological Database</h1>
       <div class="tagline">
@@ -95,22 +126,33 @@
       </div>
     </header>
 
-    <div class="controls">
-      <a href="YOUR_DIRECT_EXCEL_DOWNLOAD_LINK_HERE" class="btn" target="_blank">
-        ↓ Download Full Excel File
+    <div style="text-align: center;">
+      <a href="YOUR_DIRECT_EXCEL_DOWNLOAD_LINK_HERE" 
+         class="download-btn" 
+         target="_blank">
+        <span>↓ Download Full Excel File</span>
       </a>
-      <span style="color:#6b7280;">(recommended for offline use or advanced analysis)</span>
+      <div style="margin-top: 8px; color: #6b7280; font-size: 0.95rem;">
+        Recommended for offline use, advanced filtering, or faster access
+      </div>
     </div>
 
     <div class="info-card">
-      <strong>How to use this view:</strong><br>
-      • <strong>Sort columns</strong> → click any column header (click again to reverse)<br>
-      • <strong>Search / filter</strong> → look for small search icons or filter buttons in the header row<br>
-      • <strong>Scroll & zoom</strong> → use mouse wheel or touch gestures<br>
-      • <strong>Download full file</strong> → use the button in the top-right corner of the table or the blue button above
+      <h3>How to use this interactive view</h3>
+      <ul>
+        <li><strong>Sort columns</strong> — click any column header (click again to reverse order)</li>
+        <li><strong>Filter / search</strong> — look for small search or filter icons in the header row (if visible)</li>
+        <li><strong>Scroll & navigate</strong> — use mouse wheel, trackpad, or touch gestures</li>
+        <li><strong>Zoom in/out</strong> — use browser zoom (Ctrl + / Ctrl –) if text is small</li>
+        <li><strong>Download full file</strong> — use the large blue button above or the download icon in the top-right corner of the table</li>
+      </ul>
+      <p style="margin-top: 16px; font-style: italic;">
+        Note: This is a web-based view hosted via Microsoft Excel Online. 
+        For offline work, advanced editing, or better performance, download the full file.
+      </p>
     </div>
 
-    <iframe 
+    <iframe
       src="https://hkuhk-my.sharepoint.com/personal/cgreen_hku_hk/_layouts/15/Doc.aspx?sourcedoc={79206356-7357-42c6-9384-70649b6c2bf9}&action=embedview&AllowTyping=True&wdDownloadButton=True&wdInConfigurator=True"
       frameborder="0"
       scrolling="yes"
@@ -120,7 +162,6 @@
     <footer>
       <p>Hosted via Microsoft Excel Online • Maintained by Clarence Green, Ph.D.</p>
     </footer>
-
   </div>
 
 </body>
