@@ -3,57 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Morphology Dataset — 240k Words</title>
+  <title>BAWF Morphological Database</title>
+
   <link href="https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator.min.css" rel="stylesheet">
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #example-table { height: 85vh; } /* gives full height scrolling */
-    h1 { margin-bottom: 10px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      background: #f8f9fa; 
+    }
+    h1 { color: #2c3e50; }
+    #example-table { 
+      height: 85vh; 
+      border: 1px solid #ddd; 
+      background: white; 
+    }
+    #loading { 
+      text-align: center; 
+      padding: 60px; 
+      font-size: 1.3em; 
+      color: #555; 
+    }
+    .tabulator-header-filter { width: 100%; }
   </style>
 </head>
 <body>
-  <h1>Word Morphology Database (~240,000 entries)</h1>
-  <p>Scroll, sort any column, use the search box (top right), or filter individual columns (click the header filter icons).</p>
 
+  <h1>BAWF Morphological Database (~240,000 entries)</h1>
+  <p>Search (type in the box below the header), sort columns by clicking the header, and change pages at the bottom. Data is loaded from the database only as needed — no large download required.</p>
+
+  <div id="loading">Loading table... please wait a moment</div>
   <div id="example-table"></div>
 
   <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.0/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // Create table
-    var table = new Tabulator("#example-table", {
-      height: "100%",               // auto height or fixed
-      layout: "fitColumns",         // columns fit width
-      pagination: false,            // we use virtual scroll instead
-      placeholder: "Loading data...", 
-      ajaxURL: "data.csv",          // or "data.json"
-      ajaxConfig: "GET",
-      ajaxContentType: "csv",       // important!
-      ajaxResponse: function(url, params, response) {
-        // Parse CSV → array of objects
-        return Papa.parse(response, {
-          header: true,
-          skipEmptyLines: true,
-          dynamicTyping: true,      // auto convert numbers
-        }).data;
+    const supabase = Supabase.createClient(
+      'https://oalboybmtrhejieopfcb.supabase.co',
+      'sb_publishable_KgWF1ljhjmoTCBVkHtOqIw_nVfKDImC'
+    );
+
+    const table = new Tabulator("#example-table", {
+      height: "100%",
+      layout: "fitColumns",
+      placeholder: "No matching records found",
+      pagination: true,
+      paginationMode: "remote",
+      paginationSize: 100,
+      paginationSizeSelector: [50, 100, 250, 500, 1000],
+
+      ajaxRequestFunc: async function(url, config, params) {
+        try {
+          let query = supabase
+            .from('BAWF')
+            .select('*', { count: 'exact' });
+
+          // Global search – searches the "Word" column
+          if (params.filter) {
+            query = query.ilike('Word', `%${params.filter}%`);
+          }
+
+          // Sorting
+          if (params.sorters && params.sorters.length > 0) {
+            const sorter = params.sorters[0];
+            query = query.order(sorter.field, { ascending: sorter.dir === "asc" });
+          }
+
+          // Pagination
+          const from = (params.page - 1) * params.size;
+          const to = from + params.size - 1;
+          query = query.range(from, to);
+
+          const { data, error, count } = await query;
+
+          if (error) {
+            console.error("Supabase error:", error.message);
+            return { last_page: 1, data: [] };
+          }
+
+          return {
+            last_page: Math.ceil(count / params.size) || 1,
+            data: data || []
+          };
+        } catch (err) {
+          console.error("Fetch error:", err);
+          return { last_page: 1, data: [] };
+        }
       },
+
       columns: [
-        {title:"Word", field:"Word", headerFilter:true, sorter:"string"},
-        {title:"Baseword", field:"Baseword", headerFilter:true},
-        {title:"Root", field:"Root", headerFilter:true},
-        {title:"Greek_Latin_Root (Crowdsourced)", field:"Greek_Latin_Root_(Crowdsourced)", headerFilter:true},
-        {title:"Greek_Latin_Meaning", field:"Greek_Latin_Meaning_(Crowdsourced)", headerFilter:true},
-        {title:"Word freq /100k", field:"Word_freq_per_100k", headerFilter:"input", sorter:"number", hozAlign:"right"},
-        {title:"Word Rank", field:"Word_frq_Rank", sorter:"number", hozAlign:"right"},
-        {title:"AoA (Reading)", field:"AoA Estimate (Reading)", sorter:"number"},
-        // ... add all other columns you want (you can copy-paste the rest)
-        // Example for the last few:
-        {title:"N_morphemes", field:"N_morphemes", sorter:"number"},
-        {title:"N_affixes", field:"N_affixes", sorter:"number"},
-        // Add more as needed — Tabulator will auto-size
+        { title: "Word",                  field: "Word",                  headerFilter: "input", sorter: "string", width: 160, frozen: true },
+        { title: "Baseword",              field: "Baseword",              headerFilter: "input" },
+        { title: "Root",                  field: "Root",                  headerFilter: "input" },
+        { title: "Greek_Latin_Root",      field: "Greek_Latin_Root",      headerFilter: "input" },
+        { title: "Greek_Latin_Meaning",   field: "Greek_Latin_Meaning",   headerFilter: "input", width: 240 },
+        { title: "Word freq /100k",       field: "Word_freq_per_100k",    headerFilter: "input", sorter: "number", hozAlign: "right" },
+        { title: "Word Rank",             field: "Word_frq_Rank",         sorter: "number", hozAlign: "right" },
+        { title: "AoA (Reading)",         field: "AoA Estimate (Reading)", sorter: "number" },
+        // Add more columns here when the basic version works
+        // { title: "Prefix_1", field: "Prefix_1", headerFilter: "input" },
+        // { title: "Prefix_2", field: "Prefix_2", headerFilter: "input" },
+        // { title: "Suffix_1", field: "Suffix_1", headerFilter: "input" },
+        // ... etc.
       ],
-      initialSort: [{column:"Word_freq_per_100k", dir:"desc"}], // optional: start sorted by frequency
+
+      dataLoaded: function() {
+        document.getElementById("loading").style.display = "none";
+      }
     });
   </script>
 </body>
