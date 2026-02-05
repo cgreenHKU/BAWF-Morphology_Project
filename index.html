@@ -15,25 +15,35 @@
     }
     h1 { color: #2c3e50; }
     #example-table { 
-      height: 85vh; 
+      height: 80vh; 
       border: 1px solid #ddd; 
       background: white; 
     }
-    #loading { 
+    #loading, #status {
       text-align: center; 
-      padding: 60px; 
-      font-size: 1.3em; 
+      padding: 20px; 
+      font-size: 1.2em; 
       color: #555; 
     }
-    .tabulator-header-filter { width: 100%; }
+    button {
+      padding: 10px 20px;
+      font-size: 1.1em;
+      margin: 10px 0;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <h1>BAWF Morphological Database (~240,000 entries)</h1>
-  <p>Search (type in the box below the header), sort columns by clicking the header, and change pages at the bottom. Data is loaded from the database only as needed — no large download required.</p>
+  <h1>BAWF Morphological Database</h1>
+  <p>
+    Showing the most important columns first.<br>
+    Starts with first 1000 rows. Click "Load next 1000" for more rows.
+  </p>
 
-  <div id="loading">Loading table... please wait a moment</div>
+  <div id="loading">Loading first 1000 rows... please wait</div>
+  <div id="status"></div>
+
   <div id="example-table"></div>
 
   <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
@@ -45,74 +55,85 @@
       'sb_publishable_KgWF1ljhjmoTCBVkHtOqIw_nVfKDImC'
     );
 
+    let currentOffset = 0;
+    const pageSize = 1000;
+    let allData = [];
+
     const table = new Tabulator("#example-table", {
       height: "100%",
       layout: "fitColumns",
-      placeholder: "No matching records found",
-      pagination: true,
-      paginationMode: "remote",
-      paginationSize: 100,
-      paginationSizeSelector: [50, 100, 250, 500, 1000],
-
-      ajaxRequestFunc: async function(url, config, params) {
-        try {
-          let query = supabase
-            .from('BAWF')
-            .select('*', { count: 'exact' });
-
-          // Global search – searches the "Word" column
-          if (params.filter) {
-            query = query.ilike('Word', `%${params.filter}%`);
-          }
-
-          // Sorting
-          if (params.sorters && params.sorters.length > 0) {
-            const sorter = params.sorters[0];
-            query = query.order(sorter.field, { ascending: sorter.dir === "asc" });
-          }
-
-          // Pagination
-          const from = (params.page - 1) * params.size;
-          const to = from + params.size - 1;
-          query = query.range(from, to);
-
-          const { data, error, count } = await query;
-
-          if (error) {
-            console.error("Supabase error:", error.message);
-            return { last_page: 1, data: [] };
-          }
-
-          return {
-            last_page: Math.ceil(count / params.size) || 1,
-            data: data || []
-          };
-        } catch (err) {
-          console.error("Fetch error:", err);
-          return { last_page: 1, data: [] };
-        }
-      },
-
+      placeholder: "No data loaded yet",
+      pagination: false,
       columns: [
         { title: "Word",                  field: "Word",                  headerFilter: "input", sorter: "string", width: 160, frozen: true },
         { title: "Baseword",              field: "Baseword",              headerFilter: "input" },
         { title: "Root",                  field: "Root",                  headerFilter: "input" },
-        { title: "Greek_Latin_Root",      field: "Greek_Latin_Root",      headerFilter: "input" },
-        { title: "Greek_Latin_Meaning",   field: "Greek_Latin_Meaning",   headerFilter: "input", width: 240 },
+        { title: "Prefix_1",              field: "Prefix_1",              headerFilter: "input" },
+        { title: "Prefix_2",              field: "Prefix_2",              headerFilter: "input" },
+        { title: "Prefix_3",              field: "Prefix_3",              headerFilter: "input" },
+        { title: "Suffix_1",              field: "Suffix_1",              headerFilter: "input" },
+        { title: "Suffix_2",              field: "Suffix_2",              headerFilter: "input" },
+        { title: "Suffix_3",              field: "Suffix_3",              headerFilter: "input" },
+        { title: "Suffix_4",              field: "Suffix_4",              headerFilter: "input" },
+        { title: "Suffix_5",              field: "Suffix_5",              headerFilter: "input" },
         { title: "Word freq /100k",       field: "Word_freq_per_100k",    headerFilter: "input", sorter: "number", hozAlign: "right" },
         { title: "Word Rank",             field: "Word_frq_Rank",         sorter: "number", hozAlign: "right" },
-        { title: "AoA (Reading)",         field: "AoA Estimate (Reading)", sorter: "number" },
-        // Add more columns here when the basic version works
-        // { title: "Prefix_1", field: "Prefix_1", headerFilter: "input" },
-        // { title: "Prefix_2", field: "Prefix_2", headerFilter: "input" },
-        // { title: "Suffix_1", field: "Suffix_1", headerFilter: "input" },
-        // ... etc.
       ],
-
-      dataLoaded: function() {
-        document.getElementById("loading").style.display = "none";
-      }
+      data: [],
     });
+
+    async function loadNextBatch() {
+      document.getElementById("loading").innerHTML = "Loading next 1000 rows...";
+      document.getElementById("status").innerHTML = "";
+
+      try {
+        const { data, error } = await supabase
+          .from('BAWF')
+          .select(`
+            Word,
+            Baseword,
+            Root,
+            Prefix_1,
+            Prefix_2,
+            Prefix_3,
+            Suffix_1,
+            Suffix_2,
+            Suffix_3,
+            Suffix_4,
+            Suffix_5,
+            Word_freq_per_100k,
+            Word_frq_Rank
+          `)
+          .range(currentOffset, currentOffset + pageSize - 1)
+          .order('Word_frq_Rank', { ascending: true });  // default sort by rank
+
+        if (error) {
+          console.error("Error:", error.message);
+          document.getElementById("loading").innerHTML = "Error loading data";
+          return;
+        }
+
+        if (data && data.length > 0) {
+          allData = allData.concat(data);
+          table.setData(allData);
+          currentOffset += pageSize;
+
+          document.getElementById("loading").innerHTML = "";
+          document.getElementById("status").innerHTML = 
+            `Showing ${allData.length} rows so far. ` +
+            `<button onclick="loadNextBatch()">Load next 1000 rows</button>`;
+        } else {
+          document.getElementById("loading").innerHTML = "";
+          document.getElementById("status").innerHTML = "No more rows available.";
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("loading").innerHTML = "Error loading data";
+      }
+    }
+
+    // Load the first batch when page opens
+    loadNextBatch();
   </script>
 </body>
 </html>
