@@ -7,68 +7,107 @@
   <style>
     body {
       margin: 0;
-      padding: 24px;
-      font-family: Arial, Helvetica, sans-serif;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #f9fafb;
       color: #111827;
-      line-height: 1.6;
     }
     .container {
       max-width: 1800px;
       margin: 0 auto;
+      padding: 24px 32px;
+    }
+    header {
+      margin-bottom: 32px;
     }
     h1 {
-      margin: 0 0 12px 0;
-      font-size: 2.2rem;
-      color: #1e40af;
+      margin: 0 0 8px 0;
+      font-size: 2.4rem;
+      color: #1d4ed8;
     }
-    .intro {
-      margin-bottom: 24px;
+    .tagline {
       color: #4b5563;
+      font-size: 1.1rem;
       max-width: 900px;
     }
-    .note {
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin: 24px 0 32px 0;
+      align-items: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #1d4ed8;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #1e40af;
+    }
+    .info-card {
       background: #eff6ff;
       border-left: 4px solid #3b82f6;
       padding: 16px 20px;
-      margin: 20px 0 32px 0;
       border-radius: 6px;
+      margin: 24px 0;
       font-size: 0.98rem;
+    }
+    .info-card strong {
+      color: #1e40af;
     }
     iframe {
       width: 100%;
-      height: 90vh;
-      min-height: 700px;
+      height: 88vh;
+      min-height: 720px;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border-radius: 10px;
       background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
     }
-    @media (max-width: 768px) {
-      body { padding: 16px; }
-      h1 { font-size: 1.8rem; }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 900px) {
+      .container { padding: 16px; }
+      h1 { font-size: 2rem; }
       iframe { height: 80vh; min-height: 500px; }
+      .controls { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>BAWF Morphological Database</h1>
 
-    <div class="intro">
-      Interactive view of the morphology and frequency dataset (draft).<br>
-      You can sort columns, filter, search, and scroll through the rows directly in the embedded Excel view.
+    <header>
+      <h1>BAWF Morphological Database</h1>
+      <div class="tagline">
+        Morphology, roots, affixes and frequency information — interactive web view (draft)
+      </div>
+    </header>
+
+    <div class="controls">
+      <a href="YOUR_DIRECT_EXCEL_DOWNLOAD_LINK_HERE" class="btn" target="_blank">
+        ↓ Download Full Excel File
+      </a>
+      <span style="color:#6b7280;">(recommended for offline use or advanced analysis)</span>
     </div>
 
-    <div class="note">
-      <strong>Features available:</strong><br>
-      • Click column headers to sort (ascending / descending)<br>
-      • Use search/filter controls (if visible in header row)<br>
-      • Scroll through the table<br>
-      • Download the full Excel file using the button in the top-right corner
-      <br><br>
-      <strong>Note:</strong> This is still a web-based view. For offline work or advanced editing, download the file.
+    <div class="info-card">
+      <strong>How to use this view:</strong><br>
+      • <strong>Sort columns</strong> → click any column header (click again to reverse)<br>
+      • <strong>Search / filter</strong> → look for small search icons or filter buttons in the header row<br>
+      • <strong>Scroll & zoom</strong> → use mouse wheel or touch gestures<br>
+      • <strong>Download full file</strong> → use the button in the top-right corner of the table or the blue button above
     </div>
 
     <iframe 
@@ -77,6 +116,11 @@
       scrolling="yes"
       allowfullscreen>
     </iframe>
+
+    <footer>
+      <p>Hosted via Microsoft Excel Online • Maintained by Clarence Green, Ph.D.</p>
+    </footer>
+
   </div>
 
 </body>
