@@ -1,139 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BAWF Morphological Database</title>
-
-  <link href="https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator.min.css" rel="stylesheet">
-
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 20px; 
-      background: #f8f9fa; 
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
     }
-    h1 { color: #2c3e50; }
-    #example-table { 
-      height: 80vh; 
-      border: 1px solid #ddd; 
-      background: white; 
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
     }
-    #loading, #status {
-      text-align: center; 
-      padding: 20px; 
-      font-size: 1.2em; 
-      color: #555; 
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 1.1em;
-      margin: 10px 0;
-      cursor: pointer;
+    iframe {
+      width: 100%;
+      height: 90vh;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: white;
+    }
+    .note {
+      margin-top: 15px;
+      color: #555;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>BAWF Morphological Database (View-only)</h1>
+    <p class="note">
+      This is a read-only view. You can scroll and use the download button in the top-right corner to get the full file.
+    </p>
 
-  <h1>BAWF Morphological Database</h1>
-  <p>
-    Showing the most important columns first.<br>
-    Starts with first 1000 rows. Click "Load next 1000" for more rows.
-  </p>
-
-  <div id="loading">Loading first 1000 rows... please wait</div>
-  <div id="status"></div>
-
-  <div id="example-table"></div>
-
-  <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    const supabase = Supabase.createClient(
-      'https://oalboybmtrhejieopfcb.supabase.co',
-      'sb_publishable_KgWF1ljhjmoTCBVkHtOqIw_nVfKDImC'
-    );
-
-    let currentOffset = 0;
-    const pageSize = 1000;
-    let allData = [];
-
-    const table = new Tabulator("#example-table", {
-      height: "100%",
-      layout: "fitColumns",
-      placeholder: "No data loaded yet",
-      pagination: false,
-      columns: [
-        { title: "Word",                  field: "Word",                  headerFilter: "input", sorter: "string", width: 160, frozen: true },
-        { title: "Baseword",              field: "Baseword",              headerFilter: "input" },
-        { title: "Root",                  field: "Root",                  headerFilter: "input" },
-        { title: "Prefix_1",              field: "Prefix_1",              headerFilter: "input" },
-        { title: "Prefix_2",              field: "Prefix_2",              headerFilter: "input" },
-        { title: "Prefix_3",              field: "Prefix_3",              headerFilter: "input" },
-        { title: "Suffix_1",              field: "Suffix_1",              headerFilter: "input" },
-        { title: "Suffix_2",              field: "Suffix_2",              headerFilter: "input" },
-        { title: "Suffix_3",              field: "Suffix_3",              headerFilter: "input" },
-        { title: "Suffix_4",              field: "Suffix_4",              headerFilter: "input" },
-        { title: "Suffix_5",              field: "Suffix_5",              headerFilter: "input" },
-        { title: "Word freq /100k",       field: "Word_freq_per_100k",    headerFilter: "input", sorter: "number", hozAlign: "right" },
-        { title: "Word Rank",             field: "Word_frq_Rank",         sorter: "number", hozAlign: "right" },
-      ],
-      data: [],
-    });
-
-    async function loadNextBatch() {
-      document.getElementById("loading").innerHTML = "Loading next 1000 rows...";
-      document.getElementById("status").innerHTML = "";
-
-      try {
-        const { data, error } = await supabase
-          .from('BAWF')
-          .select(`
-            Word,
-            Baseword,
-            Root,
-            Prefix_1,
-            Prefix_2,
-            Prefix_3,
-            Suffix_1,
-            Suffix_2,
-            Suffix_3,
-            Suffix_4,
-            Suffix_5,
-            Word_freq_per_100k,
-            Word_frq_Rank
-          `)
-          .range(currentOffset, currentOffset + pageSize - 1)
-          .order('Word_frq_Rank', { ascending: true });  // default sort by rank
-
-        if (error) {
-          console.error("Error:", error.message);
-          document.getElementById("loading").innerHTML = "Error loading data";
-          return;
-        }
-
-        if (data && data.length > 0) {
-          allData = allData.concat(data);
-          table.setData(allData);
-          currentOffset += pageSize;
-
-          document.getElementById("loading").innerHTML = "";
-          document.getElementById("status").innerHTML = 
-            `Showing ${allData.length} rows so far. ` +
-            `<button onclick="loadNextBatch()">Load next 1000 rows</button>`;
-        } else {
-          document.getElementById("loading").innerHTML = "";
-          document.getElementById("status").innerHTML = "No more rows available.";
-        }
-      } catch (err) {
-        console.error(err);
-        document.getElementById("loading").innerHTML = "Error loading data";
-      }
-    }
-
-    // Load the first batch when page opens
-    loadNextBatch();
-  </script>
+    <iframe 
+      src="https://hkuhk-my.sharepoint.com/personal/cgreen_hku_hk/_layouts/15/Doc.aspx?sourcedoc={79206356-7357-42c6-9384-70649b6c2bf9}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True"
+      frameborder="0"
+      scrolling="yes">
+    </iframe>
+  </div>
 </body>
 </html>
