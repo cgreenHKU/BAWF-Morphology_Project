@@ -3,14 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My First GitHub Page</title>
+  <title>Morphology Dataset — 240k Words</title>
+  <link href="https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator.min.css" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f0f4f8; }
-    h1 { color: #2c3e50; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #example-table { height: 85vh; } /* gives full height scrolling */
+    h1 { margin-bottom: 10px; }
   </style>
 </head>
 <body>
-  <h1>Hello from GitHub Pages! 🚀</h1>
-  <p>This is my free webpage — created on GitHub.</p>
+  <h1>Word Morphology Database (~240,000 entries)</h1>
+  <p>Scroll, sort any column, use the search box (top right), or filter individual columns (click the header filter icons).</p>
+
+  <div id="example-table"></div>
+
+  <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.0/papaparse.min.js"></script>
+
+  <script>
+    // Create table
+    var table = new Tabulator("#example-table", {
+      height: "100%",               // auto height or fixed
+      layout: "fitColumns",         // columns fit width
+      pagination: false,            // we use virtual scroll instead
+      placeholder: "Loading data...", 
+      ajaxURL: "data.csv",          // or "data.json"
+      ajaxConfig: "GET",
+      ajaxContentType: "csv",       // important!
+      ajaxResponse: function(url, params, response) {
+        // Parse CSV → array of objects
+        return Papa.parse(response, {
+          header: true,
+          skipEmptyLines: true,
+          dynamicTyping: true,      // auto convert numbers
+        }).data;
+      },
+      columns: [
+        {title:"Word", field:"Word", headerFilter:true, sorter:"string"},
+        {title:"Baseword", field:"Baseword", headerFilter:true},
+        {title:"Root", field:"Root", headerFilter:true},
+        {title:"Greek_Latin_Root (Crowdsourced)", field:"Greek_Latin_Root_(Crowdsourced)", headerFilter:true},
+        {title:"Greek_Latin_Meaning", field:"Greek_Latin_Meaning_(Crowdsourced)", headerFilter:true},
+        {title:"Word freq /100k", field:"Word_freq_per_100k", headerFilter:"input", sorter:"number", hozAlign:"right"},
+        {title:"Word Rank", field:"Word_frq_Rank", sorter:"number", hozAlign:"right"},
+        {title:"AoA (Reading)", field:"AoA Estimate (Reading)", sorter:"number"},
+        // ... add all other columns you want (you can copy-paste the rest)
+        // Example for the last few:
+        {title:"N_morphemes", field:"N_morphemes", sorter:"number"},
+        {title:"N_affixes", field:"N_affixes", sorter:"number"},
+        // Add more as needed — Tabulator will auto-size
+      ],
+      initialSort: [{column:"Word_freq_per_100k", dir:"desc"}], // optional: start sorted by frequency
+    });
+  </script>
 </body>
 </html>
