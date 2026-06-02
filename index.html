@@ -20,7 +20,7 @@
     h1 { margin:0 0 8px 0; font-size:2.8rem; color:#1d4ed8; font-weight:700; }
     .tagline { font-size:2.0rem; color:#4b5563; max-width:1500px; margin:0 auto 24px auto; }
 
-    .key-btn { display:inline-block; padding:12px 24px; background:#1d4ed8; color:white; font-weight:600; border-radius:8px; cursor:pointer; margin:20px 0; text-align:center; box-shadow:0 4px 12px rgba(29, 78, 216, 0.3); }
+    .key-btn { display:inline-block; padding:12px 24px; background:#1d4ed8; color:white; font-weight:600; border-radius:8px; cursor:pointer; margin:20px 0; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
     .key-btn:hover { background:#1e40af; }
 
     /* Visual Banner */
@@ -83,12 +83,12 @@
 
     /* Other styles remain the same */
     .download-section { text-align:center; margin:20px 0; }
-    .download-btn { display:inline-flex; align-items:center; gap:12px; padding:14px 32px; font-size:1.1rem; font-weight:600; background:#1d4ed8; color:white; text-decoration:none; border-radius:10px; box-shadow:0 4px 12px rgba(29, 78, 216, 0.3); transition:all 0.2s; }
+    .download-btn { display:inline-flex; align-items:center; gap:12px; padding:14px 32px; font-size:1.1rem; font-weight:600; background:#1d4ed8; color:white; text-decoration:none; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.2s ease; }
     .download-btn:hover { background:#1e40af; transform:translateY(-2px); }
 
     iframe { width:100%; height:85vh; min-height:700px; border:none; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
 
-    #wordInput { width: 90%; max-width: 900px; height: 220px; padding: 16px; font-family: ui-monospace, monospace; font-size: 1rem; border: 2px solid #d1d5db; border-radius: 10px; resize: vertical; margin: 0 auto; }
+    #wordInput { width: 90%; max-width: 900px; height: 220px; padding: 16px; font-family: ui-monospace, monospace; font-size: 1rem; border: 2px solid #d1d5db; border-radius: 10px; resize: vertical; margin:0 auto; }
     #wordCanvas { display: block; margin: 24px auto 0 auto; max-width: 100%; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); background: white; }
 
     .modal {
@@ -218,7 +218,7 @@
     frameborder="0" 
     scrolling="yes"
     allow="clipboard-read; clipboard-write; fullscreen; clipboard-write *"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals"
+    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-clipboard-read allow-clipboard-write"
     src="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVAZTxVIWE4rQqo2VCywbscYU?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True">
 </iframe>
 </div>
@@ -238,7 +238,7 @@
     frameborder="0" 
     scrolling="yes"
     allow="clipboard-read; clipboard-write; fullscreen; clipboard-write *"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals"
+    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-clipboard-read allow-clipboard-write"
     src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fAZAm3qhNbZ4S-xZ623neZ54?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True">
 </iframe>
 </div>
@@ -258,7 +258,7 @@
     frameborder="0" 
     scrolling="yes"
     allow="clipboard-read; clipboard-write; fullscreen; clipboard-write *"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals"
+    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-clipboard-read allow-clipboard-write"
     src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True">
 </iframe>
 </div>
@@ -403,7 +403,7 @@
         <h3>Core Word Information</h3>
         <ul>
           <li><strong>Word:</strong> The surface wordform (as it appears in the dictionary and corpora)</li>
-          <li><strong>Word_frq_Zipf:</strong> Zipf frequency score of the wordform, calculated from a large English corpus (higher value = more frequent in everyday language use). A Zipf value of 1 is rare; 5+ is very common.</li>
+          <li><strong>Word_frq_Zipf:</strong> Zipf frequency score of the wordform, calculated from a large English corpus (higher value = more frequent in everyday language use). A Zipf value of 1 is among the 1,000 most common words.</li>
           <li><strong>FLemma:</strong> The lemma of the word (ignoring part of speech).</li>
           <li><strong>GPT_Coded_Word_Parts:</strong> Morphological breakdown of the word into prefixes, root(s), and suffixes, generated by fine-tuned GPT analysis.</li>
         </ul>
