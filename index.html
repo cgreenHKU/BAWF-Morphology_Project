@@ -217,8 +217,7 @@
     height="780" 
     frameborder="0" 
     scrolling="yes"
-    allow="clipboard-read; clipboard-write; fullscreen; clipboard-write *"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-clipboard-read allow-clipboard-write"
+    allow="clipboard-read; clipboard-write; fullscreen"
     src="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVAZTxVIWE4rQqo2VCywbscYU?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True">
 </iframe>
 </div>
@@ -226,7 +225,7 @@
 <!-- Compound Words -->
 <div id="compounds" class="tab-content">
   <div class="download-section">
-    <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?download=1"
+    <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexWiu7-s8wNu74?download=1"
        class="download-btn" target="_blank" rel="noopener" download>
       ↓ Download Compound Words Excel
     </a>
@@ -237,8 +236,7 @@
     height="780" 
     frameborder="0" 
     scrolling="yes"
-    allow="clipboard-read; clipboard-write; fullscreen; clipboard-write *"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-clipboard-read allow-clipboard-write"
+    allow="clipboard-read; clipboard-write; fullscreen"
     src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fAZAm3qhNbZ4S-xZ623neZ54?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True">
 </iframe>
 </div>
@@ -257,8 +255,7 @@
     height="780" 
     frameborder="0" 
     scrolling="yes"
-    allow="clipboard-read; clipboard-write; fullscreen; clipboard-write *"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-clipboard-read allow-clipboard-write"
+    allow="clipboard-read; clipboard-write; fullscreen"
     src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True">
 </iframe>
 </div>
@@ -760,7 +757,7 @@
     span.textContent = text;
     chatEl().appendChild(wrap);
     chatEl().scrollTop = chatEl().scrollHeight;
-    return span; // IMPORTANT: needed for streaming updates
+    return span;
   }
 
   function setStatus(msg, color = "#374151") {
@@ -785,7 +782,6 @@
       return;
     }
 
-    // Sort by size (smallest first)
     const sorted = [...list].sort((a, b) => {
       const getSize = m => parseFloat(m.model_id.match(/(\d+\.?\d*)/)?.[1] || 999);
       return getSize(a) - getSize(b);
@@ -888,12 +884,10 @@
     setStatus("Chat reset.", "#374151");
   }
 
-  // Expose functions to global scope (for onclick handlers)
   window.initWebLLM = initWebLLMInternal;
   window.sendWebLLM = sendWebLLMInternal;
   window.resetWebLLMChat = resetWebLLMChatInternal;
 
-  // Initialize when page loads
   window.addEventListener("load", () => {
     setTimeout(() => {
       populateModels();
