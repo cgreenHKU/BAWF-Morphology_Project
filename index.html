@@ -19,7 +19,7 @@
     h1 { margin:0 0 8px 0; font-size:2.8rem; color:#1d4ed8; font-weight:700; }
     .tagline { font-size:2.0rem; color:#4b5563; max-width:1500px; margin:0 auto 24px auto; }
 
-    .key-btn { display:inline-block; padding:12px 24px; background:#1d4ed8; color:white; font-weight:600; border-radius:8px; cursor:pointer; margin:20px 0; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); border:none; font-size:1rem; transition:background 0.2s ease; }
+    .key-btn { display:inline-block; padding:12px 24px; background:#1d4ed8; color:white; font-weight:600; border-radius:8px; cursor:pointer; margin:20px 0; text-align:center; box-shadow:0 4px 12px rgba(29, 78, 216, 0.3); }
     .key-btn:hover { background:#1e40af; }
 
     /* Visual Banner */
@@ -82,12 +82,12 @@
 
     /* Other styles remain the same */
     .download-section { text-align:center; margin:20px 0; }
-    .download-btn { display:inline-flex; align-items:center; gap:12px; padding:14px 32px; font-size:1.1rem; font-weight:600; background:#1d4ed8; color:white; text-decoration:none; border-radius:10px; border:none; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s ease; }
+    .download-btn { display:inline-flex; align-items:center; gap:12px; padding:14px 32px; font-size:1.1rem; font-weight:600; background:#1d4ed8; color:white; text-decoration:none; border-radius:10px; box-shadow:0 4px 12px rgba(29, 78, 216, 0.3); transition:all 0.2s; }
     .download-btn:hover { background:#1e40af; transform:translateY(-2px); }
 
     iframe { width:100%; height:85vh; min-height:700px; border:none; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
 
-    #wordInput { width: 90%; max-width: 900px; height: 220px; padding: 16px; font-family: ui-monospace, monospace; font-size: 1rem; border: 2px solid #d1d5db; border-radius: 10px; resize: vertical; margin:0 auto; display:block; }
+    #wordInput { width: 90%; max-width: 900px; height: 220px; padding: 16px; font-family: ui-monospace, monospace; font-size: 1rem; border: 2px solid #d1d5db; border-radius: 10px; resize: vertical; margin: 0 auto; }
     #wordCanvas { display: block; margin: 24px auto 0 auto; max-width: 100%; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); background: white; }
 
     .modal {
@@ -165,7 +165,7 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Sign_word_matrix.png" alt="Word matrix showing family relationships" class="visual-aid">
       <img src="https://www.the74million.org/wp-content/uploads/2019/05/Classroom-library.jpg" alt="Group of children reading books in a circle on the floor" class="visual-aid">
       <img src="https://as1.ftcdn.net/jpg/03/08/88/54/1000_F_308885463_Y68hiTN0ZpcqBOLPARkMawFvhFut3N7S.jpg" alt="Teacher and young children reading a colorful book together" class="visual-aid">
-        </div>
+    </div>
 
     <!-- Info Card -->
     <div class="info-card">
@@ -182,7 +182,7 @@
         <li>Download individual Excel files for offline use, advanced filtering, or editing. (Download tab is bottom right of spreadsheet)</li>
       </ul>
       <p style="margin-top: 16px; font-style: italic;">
-                            Be inspired by joyful word learning and reading — dive in and explore!
+        Be inspired by joyful word learning and reading — dive in and explore!
       </p>
     </div>
 
@@ -211,20 +211,21 @@
         </a>
       </div>
     
-      <iframe width="402" height="346" frameborder="0" scrolling="no" allow="clipboard-read; clipboard-write" src="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVAZTxVIWE4rQqo2VCywbscYU?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
+      <iframe frameborder="0" scrolling="no" allow="clipboard-read; clipboard-write" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation" src="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVAZTxVIWE4rQqo2VCywbscYU?em=2"></iframe>
       
     </div>
 
-<!-- Compound Words -->
-<div id="compounds" class="tab-content">
-  <div class="download-section">
-    <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?download=1"
-       class="download-btn" target="_blank" rel="noopener" download>
-      ↓ Download Compound Words Excel
-    </a>
-  </div>
-  <iframe width="402" height="346" frameborder="0" scrolling="no" allow="clipboard-read; clipboard-write" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation" src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fAZAm3qhNbZ4S-xZ623neZ54?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-</div>
+    <!-- Compound Words -->
+    <div id="compounds" class="tab-content">
+      <div class="download-section">
+        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?download=1"
+           class="download-btn" target="_blank" rel="noopener" download>
+          ↓ Download Compound Words Excel
+        </a>
+      </div>
+      <iframe frameborder="0" scrolling="no" allow="clipboard-read; clipboard-write" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation" src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?em=2"></iframe>
+    </div>
+
     <!-- Definitions -->
     <div id="definitions" class="tab-content">
       <div class="download-section">
@@ -233,7 +234,7 @@
           ↓ Download Definitions & Etymologies Excel
         </a>
       </div>
-     <iframe width="402" height="346" frameborder="0" scrolling="no" allow="clipboard-read; clipboard-write" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation" src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
+      <iframe frameborder="0" scrolling="no" allow="clipboard-read; clipboard-write" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation" src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2"></iframe>
     </div>
 
     <!-- Word Cloud Tab -->
@@ -262,7 +263,6 @@
           <select id="llmTextType" style="width:100%; padding:10px; border-radius:8px;">
             <option value="informational">Informational Text</option>
             <option value="fiction">Fiction Text</option>
-           //<option value="both" selected>Both (Info + Fiction)</option>
             <option value="Worksheet">Worksheet</option>
           </select>
         </div>
@@ -377,7 +377,7 @@
         <h3>Core Word Information</h3>
         <ul>
           <li><strong>Word:</strong> The surface wordform (as it appears in the dictionary and corpora)</li>
-          <li><strong>Word_frq_Zipf:</strong> Zipf frequency score of the wordform, calculated from a large English corpus (higher value = more frequent in everyday language use). A Zipf value of 1 is around 0.01% of all words in the corpus, Zipf 2 is about 0.1%, etc.</li>
+          <li><strong>Word_frq_Zipf:</strong> Zipf frequency score of the wordform, calculated from a large English corpus (higher value = more frequent in everyday language use). A Zipf value of 1 is rare; 5+ is very common.</li>
           <li><strong>FLemma:</strong> The lemma of the word (ignoring part of speech).</li>
           <li><strong>GPT_Coded_Word_Parts:</strong> Morphological breakdown of the word into prefixes, root(s), and suffixes, generated by fine-tuned GPT analysis.</li>
         </ul>
@@ -570,7 +570,7 @@
         } else if (cfg.textType === "fiction") {
           prompt += `1) Write one engaging fiction story.\n`;
         } else {
-          prompt += `1) Write:\n   - One workseet\n`;
+          prompt += `1) Write:\n   - One worksheet\n`;
         }
       } else if (cfg.textType !== "Worksheet") {
         prompt += `1) Write one ${cfg.textType} text incorporating the target words.\n`;
