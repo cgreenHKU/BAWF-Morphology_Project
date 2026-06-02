@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BAWF Morphological Database</title>
   <style>
-    body { margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(to bottom, #fdfdfd, #f8f8f8); color:#111827; }
-    .container {
-      max-width:2800px;
-      margin:30px auto;
-      padding:32px 34px;
-      background:white;
-      border-radius:16px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(to bottom, #fdfdfd, #f8f8f8);
+      color: #111827;
     }
-   
-    header { text-align:center; margin-bottom:16px; }
-    h1 { margin:0 0 8px 0; font-size:2.8rem; color:#1d4ed8; font-weight:700; }
-    .tagline { font-size:2.0rem; color:#4b5563; max-width:1500px; margin:0 auto 24px auto; }
-    .key-btn { display:inline-block; padding:12px 24px; background:#1d4ed8; color:white; font-weight:600; border-radius:8px; cursor:pointer; margin:20px 0; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); border:none; font-size:1rem; transition:background 0.2s ease; }
-    .key-btn:hover { background:#1e40af; }
-    
-    .visual-banner { display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin:25px 0 30px 0; }
+
+    .container {
+      max-width: 2800px;
+      margin: 30px auto;
+      padding: 32px 34px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    header { text-align: center; margin-bottom: 16px; }
+    h1 { margin: 0 0 8px 0; font-size: 2.8rem; color: #1d4ed8; font-weight: 700; }
+    .tagline { font-size: 2rem; color: #4b5563; max-width: 1500px; margin: 0 auto 24px auto; }
+
+    .key-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #1d4ed8;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: none;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
+    .key-btn:hover { background: #1e40af; }
+
+    .visual-banner { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 25px 0 30px 0; }
     .visual-aid {
       width: 250px;
       height: 110px;
@@ -41,12 +62,7 @@
       width: 96%;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .info-card h3 {
-      color:#1d4ed8;
-      margin-top:0;
-      font-size: 1.75rem;
-      font-weight: 700;
-    }
+    .info-card h3 { color: #1d4ed8; margin-top: 0; font-size: 1.75rem; font-weight: 700; }
     .info-card ul {
       font-size: 1.08rem;
       font-weight: 600;
@@ -57,33 +73,125 @@
       column-gap: 40px;
     }
     .info-card li { margin-bottom: 6px; break-inside: avoid; }
+    @media (max-width: 900px) { .info-card ul { column-count: 1; } }
 
-    .tabs { display:flex; justify-content:center; gap:12px; margin:28px 0 20px 0; flex-wrap:wrap; }
-    .tab-btn { padding:12px 28px; font-size:1.1rem; font-weight:600; background:#e5e7eb; color:#374151; border:none; border-radius:8px 8px 0 0; cursor:pointer; }
-    .tab-btn.active { background:#1d4ed8; color:white; }
-    .tab-content { display:none; padding:24px; }
-    .tab-content.active { display:block; }
+    .tabs { display: flex; justify-content: center; gap: 12px; margin: 28px 0 20px 0; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: #e5e7eb;
+      color: #374151;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+    }
+    .tab-btn.active { background: #1d4ed8; color: white; }
 
-    .loading-note { text-align:center; font-size:1.05rem; color:#6b7280; background:#f0f4f8; padding:14px; border-radius:8px; margin:15px 0; }
-    .download-section { text-align:center; margin:20px 0; }
-    .download-btn { display:inline-flex; align-items:center; gap:12px; padding:14px 32px; font-size:1.1rem; font-weight:600; background:#1d4ed8; color:white; text-decoration:none; border-radius:10px; border:none; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s ease; }
-    .download-btn:hover { background:#1e40af; transform:translateY(-2px); }
+    .tab-content { display: none; padding: 24px; }
+    .tab-content.active { display: block; }
 
-    iframe { width:100%; height:85vh; min-height:700px; border:none; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
+    .loading-note {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #6b7280;
+      background: #f0f4f8;
+      padding: 14px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
 
-    #wordInput { width: 90%; max-width: 900px; height: 220px; padding: 16px; font-family: ui-monospace, monospace; font-size: 1rem; border: 2px solid #d1d5db; border-radius: 10px; resize: vertical; margin:0 auto; display:block; }
-    #wordCanvas { display: block; margin: 24px auto 0 auto; max-width: 100%; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); background: white; }
+    .download-section { text-align: center; margin: 20px 0; }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: #1d4ed8;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+    }
+    .download-btn:hover { background: #1e40af; transform: translateY(-2px); }
 
-    .modal { display: none; position: fixed; inset: 0; z-index: 2147483647; background-color: rgba(0,0,0,0.7); overflow-y: auto; }
+    iframe {
+      width: 100%;
+      height: 85vh;
+      min-height: 700px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      position: relative;
+      z-index: 1;
+    }
+
+    #wordInput {
+      width: 90%;
+      max-width: 900px;
+      height: 220px;
+      padding: 16px;
+      font-family: ui-monospace, monospace;
+      font-size: 1rem;
+      border: 2px solid #d1d5db;
+      border-radius: 10px;
+      resize: vertical;
+      margin: 0 auto;
+      display: block;
+    }
+    #wordCanvas {
+      display: block;
+      margin: 24px auto 0 auto;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      background: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      background-color: rgba(0,0,0,0.7);
+      overflow-y: auto;
+    }
     .modal.show { display: block; }
-    .modal-content { position: relative; z-index: 2147483648; background: #fff; margin: 40px auto; padding: 30px; border-radius: 12px; max-width: 980px; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+    .modal-content {
+      position: relative;
+      z-index: 2147483648;
+      background: #fff;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 980px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
     .modal-header h2 { margin: 0; color: #1d4ed8; }
-    .close { font-size: 28px; font-weight: bold; color: #6b7280; cursor: pointer; }
+
+    .close {
+      font-size: 28px;
+      font-weight: bold;
+      color: #6b7280;
+      cursor: pointer;
+    }
     .close:hover { color: #111827; }
 
-    /* WebLLM Improvements */
-    .webllm-container { border:1px solid #e5e7eb; border-radius:16px; padding:24px; background:#f8fafc; box-shadow:0 4px 12px rgba(0,0,0,0.04); }
+    .modal-body { max-height: 70vh; overflow-y: auto; }
+
+    body.modal-open iframe { pointer-events: none; }
   </style>
 </head>
 <body>
@@ -112,17 +220,17 @@
         <li>Paste word + frequency into the Word Cloud tab to make visuals</li>
         <li>Use word families to build word walls</li>
         <li>Use Zipf frequencies to sort for words in the 1st 1000 most frequent words, 2nd 1000 words etc</li>
-        <li>Download individual Excel files for offline use, advanced filtering, or editing.</li>
+        <li>Download individual Excel files for offline use, advanced filtering, or editing. (Download tab is bottom right of spreadsheet)</li>
       </ul>
       <p style="margin-top: 16px; font-style: italic;">Be inspired by joyful word learning and reading — dive in and explore!</p>
     </div>
 
     <div class="loading-note">
-      <strong>Note:</strong> Interactive tables may take 5–20 seconds to load. Use download buttons for instant access!
+      <strong>Note:</strong> Interactive tables may take 5–20 seconds to load (depending on connection). Use download buttons for instant access!
     </div>
 
     <div style="text-align:center; margin:25px 0;">
-      <div class="key-btn" onclick="showColumnKey()">📋 Column Information Key</div>
+      <button class="key-btn" onclick="showColumnKey()">📋 Column Information Key</button>
     </div>
 
     <div class="tabs">
@@ -136,7 +244,10 @@
     <!-- Word Families -->
     <div id="word-families" class="tab-content active">
       <div class="download-section">
-        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVASpMJ3DXzXHX3K2aeEByqhU?download=1" class="download-btn" target="_blank" rel="noopener" download>↓ Download Word Families Excel</a>
+        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVASpMJ3DXzXHX3K2aeEByqhU?download=1"
+           class="download-btn" target="_blank" rel="noopener" download>
+          ↓ Download Word Families Excel
+        </a>
       </div>
       <iframe src="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVASpMJ3DXzXHX3K2aeEByqhU?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurationMode=False"></iframe>
     </div>
@@ -144,17 +255,25 @@
     <!-- Compound Words -->
     <div id="compounds" class="tab-content">
       <div class="download-section">
-        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?download=1" class="download-btn" target="_blank" rel="noopener" download>↓ Download Compound Words Excel</a>
+        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?download=1"
+           class="download-btn" target="_blank" rel="noopener" download>
+          ↓ Download Compound Words Excel
+        </a>
       </div>
-      <iframe src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True" allow="clipboard-read; clipboard-write" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexUiu7-s8wNu74?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurationMode=False"
+              allow="clipboard-read; clipboard-write"></iframe>
     </div>
 
     <!-- Definitions -->
     <div id="definitions" class="tab-content">
       <div class="download-section">
-        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?download=1" class="download-btn" target="_blank" rel="noopener" download>↓ Download Definitions & Etymologies Excel</a>
+        <a href="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?download=1"
+           class="download-btn" target="_blank" rel="noopener" download>
+          ↓ Download Definitions & Etymologies Excel
+        </a>
       </div>
-      <iframe src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2&AllowTyping=True&wdHideGridlines=True&wdDownloadButton=True" frameborder="0" allow="clipboard-write"></iframe>
+      <iframe src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2&AllowTyping=True&wdHideGridlines=True&wdDownloadButton=True"
+              allow="clipboard-write"></iframe>
     </div>
 
     <!-- Word Cloud -->
@@ -162,20 +281,20 @@
       <div style="max-width:900px; margin:0 auto; text-align:center;">
         <p><strong>Instructions:</strong> Paste Word + Frequency (one per line)</p>
         <textarea id="wordInput" placeholder="analysis 120&#10;morphology 95&#10;prefix 78"></textarea><br><br>
-        <button onclick="generateWordCloud()" class="key-btn">Generate Word Cloud</button>
+        <button id="generateBtn" onclick="generateWordCloud()" class="key-btn">Generate Word Cloud</button>
         <p id="cloudStatus" style="margin-top:12px; font-weight:500;"></p>
       </div>
       <canvas id="wordCanvas" width="1100" height="700"></canvas>
     </div>
 
-    <!-- LLM Tab -->
+    <!-- LLM Generator -->
     <div id="llm-generator" class="tab-content">
       <div style="max-width:1100px; margin:0 auto;">
         <h2 style="text-align:center; color:#1d4ed8;">🪄 AI Prompt Generator</h2>
         <p style="text-align:center;">Choose text type, grade level, focus area, and activities.</p>
 
-        <!-- Your original prompt generator (kept as requested) -->
-        <textarea id="llmInput" rows="8" style="width:100%; padding:14px; font-family:monospace; font-size:1.02rem; border:2px solid #d1d5db; border-radius:10px; resize:vertical;"
+        <textarea id="llmInput" rows="8"
+          style="width:100%; padding:14px; font-family:monospace; font-size:1.02rem; border:2px solid #d1d5db; border-radius:10px; resize:vertical;"
           placeholder="Paste target words (one per line)&#10;unhappy&#10;misunderstand&#10;transport&#10;attract&#10;contract"></textarea>
 
         <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:14px 0;">
@@ -184,7 +303,8 @@
             <select id="llmTextType" style="width:100%; padding:10px; border-radius:8px;">
               <option value="informational">Informational Text</option>
               <option value="fiction">Fiction Text</option>
-              <option value="Worksheet">Worksheet</option>
+              <option value="both" selected>Both (Info + Fiction)</option>
+              <option value="worksheet">Worksheet</option>
             </select>
           </div>
           <div>
@@ -206,26 +326,30 @@
           </div>
           <div>
             <label><strong>Content Area</strong></label><br>
-            <input id="llmContentArea" type="text" placeholder="e.g., Industrial Revolution, Classical Greece..." style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db;">
+            <input id="llmContentArea" type="text" placeholder="e.g., Industrial Revolution, Classical Greece, Photosynthesis, Ancient Rome"
+              style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db;">
           </div>
         </div>
 
-        <label><strong>Teacher Focus Area</strong></label>
-        <textarea id="llmFocus" rows="3" style="width:100%; padding:12px; border-radius:10px; background:#111827; color:#f9fafb; border:1px solid #374151;" 
-          placeholder="e.g., prefixes un-/re-, context clues, decoding multisyllabic words"></textarea>
+        <label><strong>Teacher Focus Area (black box)</strong></label>
+        <textarea id="llmFocus" rows="3"
+          style="width:100%; padding:12px; border-radius:10px; background:#111827; color:#f9fafb; border:1px solid #374151; font-family:inherit;"
+          placeholder="Type focus here (e.g., prefixes un-/re-, context clues, inference, decoding multisyllabic words)"></textarea>
 
         <div style="margin-top:14px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:12px;">
           <strong>Include Activities:</strong>
           <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:8px; margin-top:8px;">
             <label><input type="checkbox" class="act-option" value="Word ladder activity" checked> Word ladder</label>
-            <label><input type="checkbox" class="act-option" value="Semantically related word lists for each target word" checked> Semantic word lists</label>
-            <label><input type="checkbox" class="act-option" value="Gap-fill activity" checked> Gap fill</label>
+            <label><input type="checkbox" class="act-option" value="Semantically related word lists for each target word" checked> Semantic word lists (5 per word)</label>
+            <label><input type="checkbox" class="act-option" value="Gap-fill activity" checked> Gap fill (2 per word)</label>
+            <label><input type="checkbox" class="act-option" value="Quick answer key" checked> Quick answer key</label>
             <label><input type="checkbox" class="act-option" value="Story with comprehension questions and answer key" checked> Story + comprehension</label>
-            <label><input type="checkbox" class="act-option" value="Suggested differentiation notes" checked> Differentiation notes</label>
+            <label><input type="checkbox" class="act-option" value="Sentence frames activity"> Sentence frames (10 frames)</label>
+            <label><input type="checkbox" class="act-option" value="Suggested differentiation notes"> Suggested differentiation notes</label>
           </div>
         </div>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:20px 0;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:16px 0;">
           <select id="llmProvider" style="padding:10px 14px; font-size:1rem; border-radius:8px;">
             <option value="gemini" selected>Gemini</option>
             <option value="chatgpt">ChatGPT</option>
@@ -235,70 +359,134 @@
           <button onclick="copyLLMPrompt()" style="padding:12px 18px; font-weight:600; background:#0f766e; color:white; border:none; border-radius:8px; cursor:pointer;">Copy Prompt</button>
           <button onclick="openInLLM()" style="padding:12px 18px; font-weight:600; background:#7c3aed; color:white; border:none; border-radius:8px; cursor:pointer;">Open in Selected LLM</button>
           <button onclick="clearLLMForm()" style="padding:12px 18px; font-weight:600; background:#dc2626; color:white; border:none; border-radius:8px; cursor:pointer;">Clear</button>
+          <button onclick="refreshPage()" style="padding:12px 18px; font-weight:600; background:#111827; color:white; border:none; border-radius:8px; cursor:pointer;">Refresh Page</button>
         </div>
 
         <p id="llmStatus" style="text-align:center; font-weight:600; min-height:24px;"></p>
-        <textarea id="finalPrompt" rows="16" style="width:100%; padding:14px; font-family:monospace; border:2px solid #d1d5db; border-radius:10px; background:#f9fafb;" placeholder="Generated prompt appears here..."></textarea>
+        <textarea id="finalPrompt" rows="16"
+          style="width:100%; padding:14px; font-family:monospace; border:2px solid #d1d5db; border-radius:10px; background:#f9fafb;"
+          placeholder="Generated prompt appears here..."></textarea>
 
-        <!-- === EMBEDDED WEB LLM (Improved) === -->
         <hr style="margin:40px 0 28px 0; border-color:#e5e7eb;">
+
         <h3 style="text-align:center; color:#1d4ed8; margin-bottom:8px;">🧠 Private AI Assistant (Runs in Your Browser)</h3>
         <p style="text-align:center; color:#4b5563; max-width:800px; margin:0 auto 20px auto;">
-          No data leaves your device • Great for sensitive student data
+          No data leaves your device • Works offline after loading • Great for sensitive student data
         </p>
 
-        <div class="webllm-container">
+        <div style="border:1px solid #e5e7eb; border-radius:16px; padding:24px; background:#f8fafc; box-shadow:0 4px 12px rgba(0,0,0,0.04);">
           <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:16px; background:white; padding:16px; border-radius:12px; border:1px solid #f1f5f9;">
             <div>
               <label style="font-weight:600; color:#374151; display:block; margin-bottom:4px;">Choose Model:</label>
               <select id="webllmModel" style="padding:10px 12px; border-radius:8px; min-width:340px; font-size:1rem;"></select>
             </div>
-            <button id="loadWebLLMBtn" onclick="initWebLLM()" style="padding:12px 20px; font-weight:600; background:#1d4ed8; color:white; border:none; border-radius:10px; cursor:pointer; margin-top:20px;">⬇️ Load Model</button>
-            <button onclick="resetWebLLMChat()" style="padding:12px 20px; font-weight:600; background:#64748b; color:white; border:none; border-radius:10px; cursor:pointer; margin-top:20px;">Reset Chat</button>
+
+            <button id="loadWebLLMBtn" onclick="initWebLLM()"
+              style="padding:12px 20px; font-weight:600; background:#1d4ed8; color:white; border:none; border-radius:10px; cursor:pointer; margin-top:20px;">
+              ⬇️ Load Model
+            </button>
+
+            <button onclick="resetWebLLMChat()"
+              style="padding:12px 20px; font-weight:600; background:#64748b; color:white; border:none; border-radius:10px; cursor:pointer; margin-top:20px;">
+              Reset Chat
+            </button>
           </div>
 
           <p id="webllmStatus" style="margin:12px 0 18px 0; font-weight:600; text-align:center; min-height:26px; color:#374151;">
-            Select a model and click "Load Model" to begin
+            Select a model and click "Load Model" to begin (first load may take 30–90 seconds)
           </p>
 
-          <div id="webllmChat" style="height:380px; overflow:auto; background:white; border:1px solid #d1d5db; border-radius:12px; padding:16px; margin-bottom:16px; line-height:1.5;"></div>
+          <div id="webllmChat"
+               style="height:380px; overflow:auto; background:white; border:1px solid #d1d5db; border-radius:12px; padding:16px; margin-bottom:16px; line-height:1.5;">
+          </div>
 
           <div style="display:flex; gap:10px;">
-            <textarea id="webllmInput" rows="3" placeholder="Example: Create a short word ladder activity using unhappy, misunderstand, and transport..." 
+            <textarea id="webllmInput" rows="3"
+              placeholder="Example: Create a short word ladder activity using unhappy, misunderstand, and transport..."
               style="flex:1; padding:14px; border-radius:10px; border:1px solid #d1d5db; resize:vertical; font-size:1rem;"></textarea>
-            <button onclick="sendWebLLM()" style="padding:0 24px; font-weight:600; background:#0f766e; color:white; border:none; border-radius:10px; cursor:pointer; align-self:flex-end;">Send</button>
+
+            <button onclick="sendWebLLM()"
+              style="padding:0 24px; font-weight:600; background:#0f766e; color:white; border:none; border-radius:10px; cursor:pointer; align-self:flex-end; margin-bottom:4px;">
+              Send
+            </button>
+          </div>
+
+          <div style="text-align:center; margin-top:12px; font-size:0.9rem; color:#64748b;">
+            💡 <strong>Tip:</strong> Try asking for "morphology activities", "differentiated worksheets", or "comprehension questions"
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Column Key Modal -->
-  <div id="columnModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Column Definitions for the BAWF Morphological Database</h2>
-        <span class="close" onclick="closeModal()">×</span>
-      </div>
-      <div class="modal-body">
-        <!-- Your full modal content remains unchanged -->
-        <h3>Core Word Information</h3>
-        <ul>
-          <li><strong>Word:</strong> The surface wordform...</li>
-          <!-- ... rest of your modal content ... -->
-        </ul>
+    <!-- Column Key Modal -->
+    <div id="columnModal" class="modal" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Column Definitions for the BAWF Morphological Database</h2>
+          <span class="close" onclick="closeModal()">×</span>
+        </div>
+        <div class="modal-body">
+          <h3>Core Word Information</h3>
+          <ul>
+            <li><strong>Word:</strong> The surface wordform (as it appears in the dictionary and corpora)</li>
+            <li><strong>Word_frq_Zipf:</strong> Zipf frequency score of the wordform, calculated from a large English corpus (higher value = more frequent in everyday language use).</li>
+            <li><strong>FLemma:</strong> The lemma of the word (ignoring part of speech).</li>
+            <li><strong>GPT_Coded_Word_Parts:</strong> Morphological breakdown of the word into prefixes, root(s), and suffixes.</li>
+          </ul>
+
+          <h3>Baseword / Root Information</h3>
+          <ul>
+            <li><strong>Baseword:</strong> The central base form of the word after removing affixes.</li>
+            <li><strong>Baseword_frq_Zipf:</strong> Zipf frequency score of the baseword itself.</li>
+            <li><strong>Baseword_Family_Size:</strong> Number of wordforms in the same baseword family (excluding compounds).</li>
+            <li><strong>Baseword_FamilySize_Incl_Compounds:</strong> Number of wordforms in the baseword family, including compounds.</li>
+            <li><strong>Baseword_Zipf_Inc_Compounds:</strong> Zipf frequency of the baseword, adjusted to include compounds.</li>
+          </ul>
+
+          <h3>Root & Etymological Information</h3>
+          <ul>
+            <li><strong>GPT_Root:</strong> Primary root identified using GPT-assisted analysis.</li>
+            <li><strong>Avg_Root_Zipf_BNC_COCA:</strong> Average Zipf frequency of words sharing the same root.</li>
+            <li><strong>Root_FamilySize:</strong> Number of different wordforms sharing the same root (excluding compounds).</li>
+            <li><strong>Root_FamilySize_Inc_Compounds:</strong> Number of different wordforms sharing the same root, including compounds.</li>
+            <li><strong>Avg_Root_Zipf_Inc_Compounds:</strong> Average Zipf frequency of words sharing the root, including compounds.</li>
+          </ul>
+
+          <h3>Greek / Latin Roots</h3>
+          <ul>
+            <li><strong>Greek_Latin_Root_1:</strong> First identified classical (Greek or Latin) root.</li>
+            <li><strong>Greek_Latin_Meaning_1:</strong> Meaning of the first classical root.</li>
+            <li><strong>Greek_Latin_Root_1_FamilySize:</strong> Number of words containing this classical root.</li>
+            <li><strong>Avg_Greek_Latin_Root_1_Zipf_BNC_COCA:</strong> Average Zipf frequency of words containing this root.</li>
+            <li><strong>Greek_Latin_Root_2:</strong> Second identified classical root (if present).</li>
+            <li><strong>Greek_Latin_Meaning_2:</strong> Meaning of the second classical root.</li>
+            <li><strong>Greek_Latin_Roots_FamilySize_Incl_compounds:</strong> Total family size including compounds.</li>
+            <li><strong>Greek_Latin_Roots_Zipf_Incl_compounds:</strong> Zipf measures for classical roots, including compounds.</li>
+          </ul>
+
+          <h3>Prefixes & Suffixes</h3>
+          <ul>
+            <li><strong>Prefix_1 to Prefix_3 and Suffix_1 to Suffix_6:</strong> Include meaning, forms, frequency, count, and mean Zipf scores.</li>
+          </ul>
+
+          <h3>Other Morphological & Psycholinguistic Measures</h3>
+          <ul>
+            <li><strong>N_Morphemes:</strong> Total number of morphemes in the word.</li>
+            <li><strong>Reading AoA (Green et al., 2025):</strong> Age of Acquisition for reading.</li>
+            <li><strong>Vocabulary eXpected Grade Level (Flor et al., 2024):</strong> Expected U.S. grade level.</li>
+            <li><strong>GPT_Familiarity (Brysbaert et al., 2024):</strong> GPT-estimated familiarity rating.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
   <script>
-    // Word Cloud & General Functions
-    let wordCloudReady = false;
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        if (typeof window.WordCloud === "function") wordCloudReady = true;
-      }, 800);
+    // ===== Common UI =====
+    window.addEventListener("click", (e) => {
+      const modal = document.getElementById("columnModal");
+      if (e.target === modal) closeModal();
     });
 
     function openTab(tabName, btnEl) {
@@ -310,75 +498,409 @@
     }
 
     function showColumnKey() {
-      document.getElementById("columnModal").classList.add("show");
+      const modal = document.getElementById("columnModal");
+      if (!modal) return;
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
       document.body.classList.add("modal-open");
     }
+
     function closeModal() {
-      document.getElementById("columnModal").classList.remove("show");
+      const modal = document.getElementById("columnModal");
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("modal-open");
     }
 
-    // WordCloud function (unchanged)
-    function generateWordCloud() { /* ... your existing code ... */ }
+    // ===== Word Cloud =====
+    function generateWordCloud() {
+      const status = document.getElementById("cloudStatus");
+      const inputEl = document.getElementById("wordInput");
+      const canvas = document.getElementById("wordCanvas");
+      if (!status || !inputEl || !canvas) return;
 
-    // LLM Prompt Builder functions (unchanged)
-    function buildPromptText(words, cfg) { /* ... your existing code ... */ }
-    function generateWithLLM() { /* ... your existing code ... */ }
-    function copyLLMPrompt() { /* ... your existing code ... */ }
-    function openInLLM() { /* ... your existing code ... */ }
-    function clearLLMForm() { /* ... your existing code ... */ }
-    function refreshPage() { location.reload(); }
+      const input = inputEl.value.trim();
+      status.style.color = "#6b7280";
+      status.textContent = "Processing...";
 
-    // WebLLM Functions
+      if (!input) {
+        status.style.color = "red";
+        status.textContent = "Please paste word-frequency data first.";
+        return;
+      }
+
+      if (typeof window.WordCloud !== "function") {
+        status.style.color = "red";
+        status.textContent = "❌ WordCloud library failed to load.";
+        return;
+      }
+
+      const list = [];
+      const lines = input.split(/\r?\n/);
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+        const match = line.match(/^(.*?)\s+(-?\d*\.?\d+)$/);
+        if (!match) continue;
+        const word = match[1].trim();
+        const freq = parseFloat(match[2]);
+        if (word && Number.isFinite(freq) && freq > 0) list.push([word, freq]);
+      }
+
+      if (!list.length) {
+        status.style.color = "red";
+        status.textContent = "No valid data. Example: analysis 120";
+        return;
+      }
+
+      list.sort((a, b) => b[1] - a[1]);
+
+      canvas.width = 1100;
+      canvas.height = 700;
+
+      status.style.color = "#6b7280";
+      status.textContent = `Generating cloud with ${list.length} words...`;
+
+      setTimeout(() => {
+        window.WordCloud(canvas, {
+          list,
+          gridSize: 8,
+          weightFactor: 22,
+          fontFamily: "Segoe UI, Arial, sans-serif",
+          color: "random-dark",
+          rotateRatio: 0.3,
+          backgroundColor: "#ffffff",
+          minSize: 10,
+          shrinkToFit: true
+        });
+        status.style.color = "#15803d";
+        status.textContent = `✅ Success! ${list.length} words generated.`;
+      }, 80);
+    }
+
+    // ===== Prompt Builder =====
+    function buildPromptText(words, cfg) {
+      const lenMap = {
+        short: "150–250 words per text",
+        medium: "250–450 words per text",
+        long: "450–700 words per text"
+      };
+
+      let prompt = "You are an expert literacy teacher and curriculum writer specializing in morphology instruction.\n\n";
+      prompt += `TARGET WORDS (use ALL naturally and repeatedly):\n${words.join("\n")}\n\n`;
+      prompt += "SETTINGS:\n";
+      prompt += `- Text type: ${cfg.textType}\n`;
+      prompt += `- Grade band: ${cfg.grade}\n`;
+      prompt += `- Length: ${lenMap[cfg.length] || lenMap.medium}\n`;
+      prompt += `- Content area/theme: ${cfg.contentArea || "General"}\n`;
+      prompt += `- Teacher focus area: ${cfg.focus || "Morphology, meaning, and usage"}\n\n`;
+      prompt += "REQUIRED OUTPUT:\n";
+
+      if (cfg.textType === "informational") {
+        prompt += "1) Write one engaging informational text.\n";
+      } else if (cfg.textType === "fiction") {
+        prompt += "1) Write one engaging fiction story.\n";
+      } else if (cfg.textType === "both") {
+        prompt += "1) Write two texts:\n   - One informational text\n   - One fiction text\n";
+      } else {
+        prompt += "1) Create a classroom-ready worksheet.\n";
+      }
+
+      prompt += "\n2) For EACH target word, include:\n";
+      prompt += "   - Student-friendly definition\n";
+      prompt += "   - Morphological breakdown (prefix/root/suffix where relevant)\n";
+      prompt += "   - One example sentence\n";
+      prompt += "   - 3–5 semantically related words\n";
+
+      if (cfg.activities.length) {
+        prompt += "\n3) Create these activities:\n";
+        cfg.activities.forEach((a, i) => {
+          if (a.includes("Word ladder")) prompt += `   ${i + 1}. Word ladder activity using target words.\n`;
+          else if (a.includes("Gap-fill")) prompt += `   ${i + 1}. Gap-fill activity with 2 gaps per target word.\n`;
+          else if (a.includes("Sentence frames")) prompt += `   ${i + 1}. 10 sentence frames using target words.\n`;
+          else prompt += `   ${i + 1}. ${a}\n`;
+        });
+      }
+
+      prompt += "\n4) Teacher supports:\n";
+      prompt += "   - Suggested differentiation notes (below/at/above level)\n";
+      prompt += "   - Quick answer key\n";
+      prompt += "   - Printable-friendly formatting with clear headings and sections\n\n";
+      prompt += "Use clear, engaging, classroom-ready language appropriate for the grade level.";
+
+      return prompt;
+    }
+
+    function generateWithLLM() {
+      const raw = document.getElementById("llmInput")?.value.trim() || "";
+      const status = document.getElementById("llmStatus");
+      const out = document.getElementById("finalPrompt");
+
+      if (!raw) {
+        status.style.color = "red";
+        status.textContent = "❌ Please paste target words first.";
+        return;
+      }
+
+      const words = raw.split(/\r?\n|,/).map(w => w.trim()).filter(Boolean);
+      const activities = Array.from(document.querySelectorAll(".act-option:checked")).map(el => el.value);
+
+      const cfg = {
+        textType: document.getElementById("llmTextType")?.value || "both",
+        grade: document.getElementById("llmGrade")?.value || "4–6",
+        length: document.getElementById("llmLength")?.value || "medium",
+        contentArea: document.getElementById("llmContentArea")?.value.trim() || "",
+        focus: document.getElementById("llmFocus")?.value.trim() || "",
+        activities
+      };
+
+      out.value = buildPromptText(words, cfg);
+      status.style.color = "#15803d";
+      status.textContent = `✅ Prompt ready (${words.length} words, ${activities.length} activities).`;
+    }
+
+    function copyLLMPrompt() {
+      const out = document.getElementById("finalPrompt");
+      const status = document.getElementById("llmStatus");
+      if (!out || !status) return;
+
+      const text = out.value.trim();
+      if (!text) {
+        status.style.color = "red";
+        status.textContent = "❌ Generate a prompt first.";
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        status.style.color = "#15803d";
+        status.textContent = "✅ Prompt copied.";
+      }).catch(() => {
+        status.style.color = "red";
+        status.textContent = "❌ Copy failed. Please copy manually.";
+      });
+    }
+
+    function openInLLM() {
+      const prompt = document.getElementById("finalPrompt")?.value.trim() || "";
+      const provider = document.getElementById("llmProvider")?.value || "chatgpt";
+      const status = document.getElementById("llmStatus");
+      if (!status) return;
+
+      if (!prompt) {
+        status.style.color = "red";
+        status.textContent = "❌ Generate a prompt first.";
+        return;
+      }
+
+      const w = window.open("about:blank", "_blank");
+      if (!w) {
+        status.style.color = "red";
+        status.textContent = "❌ Popup blocked. Allow popups, then try again.";
+        return;
+      }
+
+      const encoded = encodeURIComponent(prompt);
+      let url = "https://chatgpt.com/";
+      if (provider === "gemini") url = `https://gemini.google.com/app?prompt=${encoded}`;
+      if (provider === "chatgpt") url = `https://chatgpt.com/?q=${encoded}`;
+      if (provider === "claude") url = "https://claude.ai/new";
+
+      w.location.href = url;
+
+      navigator.clipboard.writeText(prompt).then(() => {
+        status.style.color = "#15803d";
+        status.textContent = "✅ Opened new tab. Prompt copied.";
+      }).catch(() => {
+        status.style.color = "#15803d";
+        status.textContent = "✅ Opened new tab. Paste prompt manually if needed.";
+      });
+    }
+
+    function clearLLMForm() {
+      ["llmInput", "llmContentArea", "llmFocus", "finalPrompt"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      const status = document.getElementById("llmStatus");
+      if (status) status.textContent = "";
+    }
+
+    function refreshPage() {
+      location.reload();
+    }
+  </script>
+
+  <script type="module">
+    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
     let engine = null;
-    let messages = [{ role: "system", content: "You are a friendly, experienced literacy teacher who specializes in morphology instruction. Give practical, classroom-ready answers." }];
+    let messages = [
+      {
+        role: "system",
+        content: "You are a friendly, experienced literacy teacher who specializes in morphology instruction. Give practical, classroom-ready answers."
+      }
+    ];
+
+    function escapeHtml(s) {
+      return s
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
 
     function addChatMessage(role, text) {
       const chat = document.getElementById("webllmChat");
-      if (!chat) return;
+      if (!chat) return null;
+
       const div = document.createElement("div");
       div.style.marginBottom = "16px";
+      const safe = escapeHtml(text);
+
       if (role === "You") {
-        div.innerHTML = `<strong style="color:#1d4ed8;">You:</strong><br><span>${text}</span>`;
+        div.innerHTML = `<strong style="color:#1d4ed8;">You:</strong><br><span style="display:block; margin-top:4px; white-space:pre-wrap;">${safe}</span>`;
       } else {
-        div.innerHTML = `<strong style="color:#15803d;">AI Teacher:</strong><br><span>${text}</span>`;
+        div.innerHTML = `<strong style="color:#15803d;">AI Teacher:</strong><br><span style="display:block; margin-top:4px; white-space:pre-wrap;">${safe}</span>`;
       }
+
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
+      return div;
     }
 
     function setWebLLMStatus(msg, color = "#374151") {
-      const el = document.getElementById("webllmStatus");
-      if (el) {
-        el.textContent = msg;
-        el.style.color = color;
+      const statusEl = document.getElementById("webllmStatus");
+      if (statusEl) {
+        statusEl.textContent = msg;
+        statusEl.style.color = color;
       }
     }
 
     function populateModels() {
       const select = document.getElementById("webllmModel");
       if (!select) return;
+
       select.innerHTML = '<option value="">-- Choose a model --</option>';
-      // Rest of your populateModels logic...
+
+      const models = (webllm?.prebuiltAppConfig?.model_list || [])
+        .filter(m => !m.model_id.toLowerCase().includes("embed"));
+
+      models.forEach(model => {
+        const opt = document.createElement("option");
+        opt.value = model.model_id;
+        const size = model.vram_required_MB ? ` (~${Math.round(model.vram_required_MB / 1024)}GB)` : "";
+        opt.textContent = `${model.model_id}${size}`;
+        select.appendChild(opt);
+      });
     }
 
-    async function initWebLLM() { /* ... your improved initWebLLM ... */ }
-    async function sendWebLLM() { /* ... your improved sendWebLLM ... */ }
-    function resetWebLLMChat() { /* ... your improved reset ... */ }
+    async function initWebLLM() {
+      const loadBtn = document.getElementById("loadWebLLMBtn");
+      const selectedModel = document.getElementById("webllmModel")?.value || "";
 
-    // Initialize WebLLM models
+      if (!selectedModel) {
+        setWebLLMStatus("❌ Please select a model first", "red");
+        return;
+      }
+
+      if (loadBtn) loadBtn.disabled = true;
+      setWebLLMStatus("Loading model... This may take 30–90 seconds the first time", "#1d4ed8");
+
+      try {
+        engine = await webllm.CreateMLCEngine(selectedModel, {
+          initProgressCallback: (report) => {
+            setWebLLMStatus(`Loading ${selectedModel}... ${report.text || ""}`, "#1d4ed8");
+                    }
+        });
+
+        setWebLLMStatus(`✅ ${selectedModel} loaded successfully!`, "#15803d");
+        addChatMessage(
+          "AI Teacher",
+          "Hello! I'm ready to help you create morphology lessons, activities, or answer literacy questions."
+        );
+      } catch (err) {
+        console.error(err);
+        setWebLLMStatus(`❌ Failed to load model: ${err.message || err}`, "red");
+      } finally {
+        if (loadBtn) loadBtn.disabled = false;
+      }
+    }
+
+    async function sendWebLLM() {
+      if (!engine) {
+        setWebLLMStatus("❌ Please load a model first", "red");
+        return;
+      }
+
+      const input = document.getElementById("webllmInput");
+      const chat = document.getElementById("webllmChat");
+      const text = input?.value.trim() || "";
+      if (!text) return;
+
+      addChatMessage("You", text);
+      messages.push({ role: "user", content: text });
+      input.value = "";
+
+      const responseDiv = addChatMessage("AI Teacher", "...");
+
+      try {
+        const stream = await engine.chat.completions.create({
+          messages,
+          stream: true,
+          temperature: 0.75
+        });
+
+        let responseText = "";
+        const span = responseDiv?.querySelector("span");
+
+        for await (const chunk of stream) {
+          const token = chunk?.choices?.[0]?.delta?.content || "";
+          responseText += token;
+          if (span) span.textContent = responseText;
+          if (chat) chat.scrollTop = chat.scrollHeight;
+        }
+
+        messages.push({ role: "assistant", content: responseText });
+      } catch (err) {
+        console.error(err);
+        const span = responseDiv?.querySelector("span");
+        if (span) span.innerHTML = `<span style="color:red;">Error: ${err.message || "Failed to generate response"}</span>`;
+      }
+    }
+
+    function resetWebLLMChat() {
+      messages = [
+        {
+          role: "system",
+          content:
+            "You are a friendly, experienced literacy teacher who specializes in morphology instruction. Give practical, classroom-ready answers."
+        }
+      ];
+      const chat = document.getElementById("webllmChat");
+      if (chat) chat.innerHTML = "";
+      setWebLLMStatus("Chat has been reset.", "#374151");
+    }
+
+    // Expose module functions for inline onclick handlers
+    window.initWebLLM = initWebLLM;
+    window.sendWebLLM = sendWebLLM;
+    window.resetWebLLMChat = resetWebLLMChat;
+
+    // Populate model list on load
     window.addEventListener("load", () => {
       setTimeout(() => {
         populateModels();
-        setWebLLMStatus("Select a model then click 'Load Model'", "#374151");
-      }, 1000);
+        setWebLLMStatus(
+          "Select a model then click 'Load Model' to start your private AI assistant",
+          "#374151"
+        );
+      }, 500);
     });
   </script>
 
-  <script type="module">
-    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
-    // All WebLLM code you provided goes here (initWebLLM, sendWebLLM, etc.)
-    // Make sure to keep the full improved version
-  </script>
 </body>
 </html>
+
