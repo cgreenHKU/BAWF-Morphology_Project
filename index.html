@@ -51,9 +51,25 @@
       border-left: 5px solid #3b82f6;
     }
     .info-card h3 { margin: 0 0 16px 0; font-size: 1.4rem; color: #1d4ed8; }
-    .info-card ul { list-style: none; padding: 0; margin: 0; font-size: 1.05rem; line-height: 1.7; }
-    .info-card li { position: relative; padding-left: 32px; margin-bottom: 12px; }
-    .info-card li:before { content: "→"; position: absolute; left: 0; color: #3b82f6; font-weight: bold; }
+    .info-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .info-card li {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 12px;
+    }
+    .info-card li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-weight: bold;
+    }
 
     .controls {
       display: flex;
@@ -63,23 +79,8 @@
       margin: 20px 0;
       align-items: center;
     }
-    #globalSearch { 
-      width: 420px; 
-      padding: 14px; 
-      border-radius: 8px; 
-      border: 1px solid #d1d5db; 
-      font-size: 1.05rem;
-    }
-    .btn { 
-      background: #1d4ed8; 
-      color: white; 
-      padding: 14px 24px; 
-      border: none; 
-      border-radius: 8px; 
-      cursor: pointer; 
-      font-weight: 600; 
-      font-size: 1.05rem;
-    }
+    #globalSearch { width: 380px; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db; }
+    .btn { background: #1d4ed8; color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
     .btn:hover { background: #1e40af; }
 
     table {
@@ -90,44 +91,10 @@
       border-radius: 12px;
       overflow: hidden;
     }
-    th, td { 
-      padding: 12px 10px; 
-      text-align: left; 
-      border-bottom: 1px solid #e5e7eb; 
-    }
-    th { 
-      background: #1e40af; 
-      color: white; 
-      cursor: pointer; 
-      position: sticky; 
-      top: 0; 
-      z-index: 10; 
-    }
+    th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #1e40af; color: white; cursor: pointer; position: sticky; top: 0; z-index: 10; }
     tr:hover { background: #f0f9ff; }
     .long-text { max-width: 450px; white-space: pre-wrap; line-height: 1.45; }
-
-    /* Bigger filter boxes */
-    .filter-row input, .filter-row select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      min-height: 38px;
-      box-sizing: border-box;
-    }
-
-    .source-btn {
-      background: #3b82f6;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-    .source-btn:hover { background: #2563eb; }
 
     .pagination {
       display: flex;
@@ -150,8 +117,9 @@
       </div>
     </header>
 
+    <!-- Download Button -->
     <div style="text-align: center; margin-bottom: 30px;">
-      <a href="Figurative%20Language%20Database.zip" class="btn" download>
+      <a href="Figurative%20Language%20Database.zip" class="btn" download style="font-size: 1.25rem; padding: 16px 36px;">
         ↓ Download Full Database (.zip)
       </a>
     </div>
@@ -163,42 +131,63 @@
       </div>
       <div class="gallery-item">
         <img src="https://thumbs.dreamstime.com/b/majestic-lion-rocky-peak-vibrant-sunset-clouds-majestic-lion-rocky-peak-vibrant-sunset-clouds-420984846.jpg" alt="Majestic lion – as brave as a lion">
-        <div class="gallery-caption"><strong>Simile</strong><br>Comparison using "like" or "as".</div>
+        <div class="gallery-caption">
+          <strong>Simile</strong><br>
+          Comparison using "like" or "as".<br>
+          Example: "as brave as a lion"
+        </div>
       </div>
       <div class="gallery-item">
-        <img src="https://thumbs.dreamstime.com/b/ghostly-galleon-sails-under-brooding-moonlit-sky-turbulent-sea-majestic-tall-ship-dark-glow-full-moon-357371346.jpg" alt="Ghostly galleon">
-        <div class="gallery-caption"><strong>Metaphor</strong><br>Direct comparison without "like" or "as".</div>
+        <img src="https://thumbs.dreamstime.com/b/ghostly-galleon-sails-under-brooding-moonlit-sky-turbulent-sea-majestic-tall-ship-dark-glow-full-moon-357371346.jpg" alt="Ghostly galleon on stormy seas under moon">
+        <div class="gallery-caption">
+          <strong>Metaphor</strong><br>
+          Direct comparison without "like" or "as".<br>
+          Example: "The moon was a ghostly galleon tossed upon cloudy seas."
+        </div>
       </div>
       <div class="gallery-item">
-        <img src="https://thumbs.dreamstime.com/b/whispering-landscape-frozen-forest-winter-silence-ethereal-nature-concept-292248604.jpg" alt="Personification">
-        <div class="gallery-caption"><strong>Personification</strong><br>Giving human qualities to non-human things.</div>
+        <img src="https://thumbs.dreamstime.com/b/whispering-landscape-frozen-forest-winter-silence-ethereal-nature-concept-292248604.jpg" alt="Ethereal whispering winter forest">
+        <div class="gallery-caption">
+          <strong>Personification</strong><br>
+          Giving human qualities to non-human things.<br>
+          Example: "The wind whispered through the trees."
+        </div>
       </div>
       <div class="gallery-item">
-        <img src="https://www.literacyideas.com/wp-content/uploads/2021/08/Hyperbole-eat-a-horse-1.jpg" alt="Hyperbole">
-        <div class="gallery-caption"><strong>Hyperbole</strong><br>Extreme exaggeration for effect.</div>
+        <img src="https://www.literacyideas.com/wp-content/uploads/2021/08/Hyperbole-eat-a-horse-1.jpg" alt="Horse with speech bubble – hyperbole example">
+        <div class="gallery-caption">
+          <strong>Hyperbole</strong><br>
+          Extreme exaggeration for effect.<br>
+          Example: "I'm so hungry I could eat a horse."
+        </div>
       </div>
       <div class="gallery-item">
-        <img src="https://thumbs.dreamstime.com/b/multicultural-kids-children-playing-reading-books-isolated-white-89339344.jpg" alt="Children reading">
+        <img src="https://thumbs.dreamstime.com/b/multicultural-kids-children-playing-reading-books-isolated-white-89339344.jpg" alt="Diverse children reading books">
       </div>
     </section>
 
+    <!-- Info Card -->
     <div class="info-card">
       <h3>How to use this interactive view</h3>
       <ul>
-        <li><strong>Search</strong> — Use the main search box</li>
-        <li><strong>Filter</strong> — Use the improved larger filter boxes below headers</li>
-        <li><strong>Sort</strong> — Click column headers</li>
-        <li><strong>Find Source</strong> — Click the blue "🔍 Google" button in the last column</li>
-        <li><strong>Export</strong> — Export your filtered results</li>
+        <li><strong>Search</strong> — Use the search box above the table</li>
+        <li><strong>Filter</strong> — Use dropdowns and text boxes in the filter row</li>
+        <li><strong>Sort</strong> — Click any column header</li>
+        <li><strong>Navigate</strong> — Use pagination buttons below the table</li>
+        <li><strong>Export</strong> — Use "Export Filtered CSV" to save your current view</li>
       </ul>
+      <p style="margin-top: 16px; font-style: italic;">
+        Tip: For very large datasets, the table uses pagination (100 rows per page) for better performance.
+      </p>
     </div>
 
+    <!-- Controls & Table -->
     <div class="controls">
       <input type="text" id="globalSearch" placeholder="Search anywhere (book, quote, domain...)">
       <button class="btn" onclick="exportCSV()">↓ Export Filtered as CSV</button>
     </div>
 
-    <div id="loading">Loading large database... (10-20 seconds first time)</div>
+    <div id="loading">Loading large database... (this may take 10-20 seconds the first time)</div>
 
     <table id="dataTable" style="display:none;">
       <thead>
@@ -254,10 +243,11 @@
           }
         });
       } catch (err) {
-        document.getElementById('loading').innerHTML = "Error loading file.";
+        document.getElementById('loading').innerHTML = "Error loading zip file.<br>Make sure 'Figurative Language Database.zip' is in the same folder.";
       }
     }
 
+    // (Rest of the JavaScript functions are the same as the previous paginated version)
     function renderTable() {
       const start = (currentPage - 1) * rowsPerPage;
       const end = start + rowsPerPage;
@@ -281,22 +271,6 @@
           td.textContent = val;
           tr.appendChild(td);
         });
-
-        // New "Find Source" column
-        const actionTd = document.createElement('td');
-        const sourceText = (row['Source Attribution'] || '').trim();
-        if (sourceText) {
-          const searchQuery = encodeURIComponent(sourceText + " read aloud picture book");
-          const btn = document.createElement('button');
-          btn.className = 'source-btn';
-          btn.innerHTML = '🔍 Google';
-          btn.onclick = () => window.open(`https://www.google.com/search?q=${searchQuery}`, '_blank');
-          actionTd.appendChild(btn);
-        } else {
-          actionTd.textContent = '-';
-        }
-        tr.appendChild(actionTd);
-
         tbody.appendChild(tr);
       });
 
@@ -310,7 +284,6 @@
       const headerRow = document.getElementById('headerRow');
       const filterRow = document.getElementById('filterRow');
 
-      // Original columns
       columns.forEach(col => {
         const th = document.createElement('th');
         th.textContent = col;
@@ -318,12 +291,6 @@
         headerRow.appendChild(th);
       });
 
-      // New action column header
-      const actionTh = document.createElement('th');
-      actionTh.textContent = 'Find Source';
-      headerRow.appendChild(actionTh);
-
-      // Filter row (no filter for action column)
       columns.forEach((col, i) => {
         const td = document.createElement('td');
         const dropdownCols = ['Book Type', 'Figurative Language Type', 'Source Domain', 'Target Domain'];
@@ -348,12 +315,8 @@
         }
         filterRow.appendChild(td);
       });
-
-      // Empty cell for action column
-      filterRow.appendChild(document.createElement('td'));
     }
 
-    // filterTable, sortTable, pagination, exportCSV functions remain the same as previous version
     function filterTable() {
       const searchTerm = document.getElementById('globalSearch').value.toLowerCase().trim();
       const filterEls = Array.from(document.querySelectorAll('.filter-row td input, .filter-row td select'));
