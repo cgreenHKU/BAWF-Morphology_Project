@@ -1,900 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BAWF Morphological Database</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Picturebook Figurative Language Database</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
-    body { margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(to bottom, #fdfdfd, #f8f8f8); color:#111827; }
-    .container { 
-      max-width:2800px; 
-      margin:30px auto;
-      padding:32px 34px;
-      background:white; 
-      border-radius:16px; 
-      box-shadow:0 10px 30px rgba(0,0,0,0.06); 
-    }
-    
-    header { text-align:center; margin-bottom:16px; }
-    h1 { margin:0 0 8px 0; font-size:2.8rem; color:#1d4ed8; font-weight:700; }
-    .tagline { font-size:2.0rem; color:#4b5563; max-width:1500px; margin:0 auto 24px auto; }
+    body { font-family: system-ui, sans-serif; background: linear-gradient(#f9fafb, #f3f4f6); margin:0; padding:20px; }
+    .container { max-width: 1900px; margin: 0 auto; }
+    h1 { color: #1d4ed8; text-align:center; }
+    .tagline { text-align:center; color:#4b5563; }
 
-    .key-btn { display:inline-block; padding:12px 24px; background:#1d4ed8; color:white; font-weight:600; border-radius:8px; cursor:pointer; margin:20px 0; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-    .key-btn:hover { background:#1e40af; }
-
-    /* Visual Banner */
-    .visual-banner { display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin:25px 0 30px 0; }
-    .visual-aid {
-      width: 250px;
-      height: 110px;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
-    .visual-aid:hover { transform: scale(1.03); }
-
-    /* === ABOUT THIS DATABASE - Wider + Bigger Text === */
-    .info-card {
-      background: #f0f4f8;
-      border-radius: 12px;
-      padding: 35px 50px;
-      margin: 20px auto;
-      max-width: 1850px;
-      width: 96%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    .info-card h3 { 
-      color:#1d4ed8; 
-      margin-top:0; 
-      font-size: 1.75rem;
-      font-weight: 700;
-    }
-    .info-card ul {
-      font-size: 1.08rem;
-      font-weight: 600;
-      line-height: 1.45;
-      padding-left: 22px;
-      margin: 0;
-      column-count: 2;
-      column-gap: 40px;
-    }
-    
-    .info-card li {
-      margin-bottom: 6px;
-      break-inside: avoid;
-    }
-    
-    @media (max-width: 900px) {
-      .info-card ul {
-        column-count: 1;
-      }
-    }
-    
-    .tabs { display:flex; justify-content:center; gap:12px; margin:28px 0 20px 0; flex-wrap:wrap; }
-    .tab-btn { padding:12px 28px; font-size:1.1rem; font-weight:600; background:#e5e7eb; color:#374151; border:none; border-radius:8px 8px 0 0; cursor:pointer; }
-    .tab-btn.active { background:#1d4ed8; color:white; }
-
-    .tab-content { display:none; padding:24px; }
-    .tab-content.active { display:block; }
-
-    .loading-note { text-align:center; font-size:1.05rem; color:#6b7280; background:#f0f4f8; padding:14px; border-radius:8px; margin:15px 0; }
-
-    /* Other styles remain the same */
-    .download-section { text-align:center; margin:20px 0; }
-    .download-btn { display:inline-flex; align-items:center; gap:12px; padding:14px 32px; font-size:1.1rem; font-weight:600; background:#1d4ed8; color:white; text-decoration:none; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.2s ease; }
-    .download-btn:hover { background:#1e40af; transform:translateY(-2px); }
-
-    iframe { width:100%; height:85vh; min-height:700px; border:none; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
-
-    #wordInput { width: 90%; max-width: 900px; height: 220px; padding: 16px; font-family: ui-monospace, monospace; font-size: 1rem; border: 2px solid #d1d5db; border-radius: 10px; resize: vertical; margin:0 auto; }
-    #wordCanvas { display: block; margin: 24px auto 0 auto; max-width: 100%; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); background: white; }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 2147483647;
-      background-color: rgba(0,0,0,0.7);
-      overflow-y: auto;
-    }
-    
-    .modal.show {
-      display: block;
-    }
-    
-    .modal-content {
-      position: relative;
-      z-index: 2147483648;
-      background: #fff;
-      margin: 40px auto;
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 980px;
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .modal-header h2 {
-      margin: 0;
-      color: #1d4ed8;
-    }
-    
-    .close {
-      font-size: 28px;
-      font-weight: bold;
-      color: #6b7280;
+    /* Tabs */
+    .tabs { display:flex; justify-content:center; margin:20px 0; border-bottom:2px solid #e5e7eb; }
+    .tab-btn {
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      background: none;
+      border: none;
       cursor: pointer;
+      border-bottom: 4px solid transparent;
     }
-    
-    .close:hover {
-      color: #111827;
+    .tab-btn.active {
+      border-bottom: 4px solid #1d4ed8;
+      color: #1d4ed8;
+      font-weight: 600;
     }
-    
-    .modal-body {
-      max-height: 70vh;
-      overflow-y: auto;
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .about-box, .info-card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      margin: 20px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border-left: 6px solid #1d4ed8;
     }
-    
-    iframe {
-      position: relative;
-      z-index: 1;
-    }
-    
-    body.modal-open iframe {
-      pointer-events: none;
-    }
+
+    /* Rest of your styles (gallery, table, filters, etc.) */
+    .controls { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px 0; }
+    #globalSearch { width: 420px; padding:14px; font-size:1.05rem; border-radius:8px; }
+    .btn { background:#1d4ed8; color:white; padding:14px 24px; border:none; border-radius:8px; cursor:pointer; }
+    table { width:100%; border-collapse:collapse; background:white; box-shadow:0 10px 30px rgba(0,0,0,0.1); border-radius:12px; }
+    th, td { padding:12px; border-bottom:1px solid #eee; }
+    th { background:#1e40af; color:white; cursor:pointer; position:sticky; top:0; }
+    .filter-row input, .filter-row select { padding:10px 12px; min-height:42px; width:100%; border-radius:6px; }
+    .source-btn { background:#3b82f6; color:white; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; }
+    .long-text { max-width:450px; white-space:pre-wrap; line-height:1.45; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>BAWF Morphological Database</h1>
-      <div class="tagline">Morphology, roots, affixes, compounds, and etymology</div>
+      <h1>Picturebook Figurative Language Database</h1>
+      <div class="tagline">Research-based open resource for teachers</div>
     </header>
-      
-    <!-- YOUR ORIGINAL WORKING VISUAL BANNER -->
-    <div class="visual-banner">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Word_Cloud_of_Various_Prefixes.png" alt="Word cloud of common English prefixes" class="visual-aid">
-      <img src="https://www.shichida.com.au/wp-content/uploads/2023/05/teaching-vocab-feature-1024x683.png" alt="Children engaged in fun vocabulary and word learning" class="visual-aid">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Sign_word_matrix.png" alt="Word matrix showing family relationships" class="visual-aid">
-      <img src="https://www.the74million.org/wp-content/uploads/2019/05/Classroom-library.jpg" alt="Group of children reading books in a circle on the floor" class="visual-aid">
-      <img src="https://as1.ftcdn.net/jpg/03/08/88/54/1000_F_308885463_Y68hiTN0ZpcqBOLPARkMawFvhFut3N7S.jpg" alt="Teacher and young children reading a colorful book together" class="visual-aid">
-    </div>
 
-    <!-- Info Card -->
-    <div class="info-card">
-      <h3>About this Database</h3>
-      <ul>
-        <li>Explore English word families, compound words, and definitions/etymologies</li>
-        <li>The British and American Word Families (BAWF) is a tool for vocabulary morphology instruction from the primary grades </li>
-        <li>Morphology is the study of how words are built from meaningful units, including bases, roots, prefixes, and suffixes.</li>
-        <li>Filter or search for words you want and particular morphemes.</li>
-        <li>Use tabs and search box in the columns below to sort by frequency, grade level, or easily filter for morphologically related words</li>
-        <li>Paste word + frequency into the Word Cloud tab to make visuals</li>
-        <li>Use word families to build word walls</li>
-        <li>Use Zipf frequencies to sort for words in the 1st 1000 most frequent words, 2nd 1000 words etc</li>
-        <li>Download individual Excel files for offline use, advanced filtering, or editing. (Download tab is bottom right of spreadsheet)</li>
-      </ul>
-      <p style="margin-top: 16px; font-style: italic;">
-        Be inspired by joyful word learning and reading — dive in and explore!
-      </p>
-    </div>
-
-    <div class="loading-note">
-      <strong>Note:</strong> Interactive tables may take 5–20 seconds to load (depending on connection). Use download buttons for instant access!
-    </div>
-
-    <div style="text-align:center; margin:25px 0;">
-      <div class="key-btn" onclick="showColumnKey()">📋 Column Information Key</div>
-    </div>
-
+    <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="openTab('word-families', this)">Word Families</button>
-      <button class="tab-btn" onclick="openTab('compounds', this)">Compound Words</button>
-      <button class="tab-btn" onclick="openTab('definitions', this)">Definitions & Etymologies</button>
-      <button class="tab-btn" onclick="openTab('wordcloud', this)">Word Cloud Generator</button>
-      <button class="tab-btn" onclick="openTab('llm-generator', this)">🪄 Generate AI Stories & Worksheets!</button>
+      <button class="tab-btn active" onclick="switchTab(0)">📊 Database</button>
+      <button class="tab-btn" onclick="switchTab(1)">✍️ AI Lesson Generator</button>
     </div>
 
-<!-- Word Families -->
-<div id="word-families" class="tab-content active">
-  <div class="download-section">
-    <a href="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVASpMJ3DXzXHX3K2aeEByqhU?download=1"
-       class="download-btn" target="_blank" rel="noopener" download>
-      ↓ Download Word Families Excel
-    </a>
-  </div>
-  
-  <iframe 
-    width="100%" 
-    height="780" 
-    frameborder="0" 
-    scrolling="yes"
-    allow="clipboard-read *; clipboard-write *; fullscreen *"
-    src="https://1drv.ms/x/c/7dd10ea681993770/IQT2pwnY9qT1Q4DGZ2CTL9WVAZTxVIWE4rQqo2VCywbscYU?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True&wdPrint=False">
-  </iframe>
-</div>
-
-<!-- Compound Words -->
-<div id="compounds" class="tab-content">
-  <div class="download-section">
-    <a href="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fATyGvqGhtexWiu7-s8wNu74?download=1"
-       class="download-btn" target="_blank" rel="noopener" download>
-      ↓ Download Compound Words Excel
-    </a>
-  </div>
-  
-  <iframe 
-    width="100%" 
-    height="780" 
-    frameborder="0" 
-    scrolling="yes"
-    allow="clipboard-read *; clipboard-write *; fullscreen *"
-    src="https://1drv.ms/x/c/7dd10ea681993770/IQTWH_RNq98ZTZ8Xss974f_fAZAm3qhNbZ4S-xZ623neZ54?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True&wdPrint=False">
-  </iframe>
-</div>
-
-<!-- Definitions -->
-<div id="definitions" class="tab-content">
-  <div class="download-section">
-    <a href="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?download=1"
-       class="download-btn" target="_blank" rel="noopener" download>
-      ↓ Download Definitions & Etymologies Excel
-    </a>
-  </div>
-  
-  <iframe 
-    width="100%" 
-    height="780" 
-    frameborder="0" 
-    scrolling="yes"
-    allow="clipboard-read *; clipboard-write *; fullscreen *"
-    src="https://1drv.ms/x/c/7dd10ea681993770/IQQsbLYK8J8WQqwzSjZDdcQOAR0Hqje6AOnYUQmE2mri7ZE?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdAllowInteractivity=True&wdPrint=False">
-  </iframe>
-</div>
-
-
-    <!-- Word Cloud Tab -->
-    <div id="wordcloud" class="tab-content">
-      <div style="max-width:900px; margin:0 auto; text-align:center;">
-        <p><strong>Instructions:</strong> Paste Word + Frequency (one per line)</p>
-        <textarea id="wordInput" placeholder="analysis 120&#10;morphology 95&#10;prefix 78"></textarea><br><br>
-        <button id="generateBtn" onclick="generateWordCloud()" class="key-btn">Generate Word Cloud</button>
-        <p id="cloudStatus" style="margin-top:12px; font-weight:500;"></p>
-      </div>
-      <canvas id="wordCanvas" width="1100" height="700"></canvas>
-    </div>
-
-    <!-- LLM Tab -->
-    <div id="llm-generator" class="tab-content">
-    <div style="max-width:1100px; margin:0 auto;">
-      <h2 style="text-align:center; color:#1d4ed8;">🪄 AI Prompt Generator</h2>
-      <p style="text-align:center;">Choose text type, grade level, focus area, and activities.</p>
-      
-      <textarea id="llmInput" rows="8" style="width:100%; padding:14px; font-family:monospace; font-size:1.02rem; border:2px solid #d1d5db; border-radius:10px; resize:vertical;"
-        placeholder="Paste target words (one per line)&#10;unhappy&#10;misunderstand&#10;transport&#10;attract&#10;contract"></textarea>
-
-      <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:14px 0;">
-        <div>
-          <label><strong>Prompt Type</strong></label><br>
-          <select id="llmTextType" style="width:100%; padding:10px; border-radius:8px;">
-            <option value="informational">Informational Text</option>
-            <option value="fiction">Fiction Text</option>
-            <option value="Worksheet">Worksheet</option>
-          </select>
-        </div>
-        <div>
-          <label><strong>Grade Level</strong></label><br>
-          <select id="llmGrade" style="width:100%; padding:10px; border-radius:8px;">
-            <option>K–1</option>
-            <option>2–3</option>
-            <option selected>4–6</option>
-            <option>7–8</option>
-          </select>
-        </div>
-        <div>
-          <label><strong>Length</strong></label><br>
-          <select id="llmLength" style="width:100%; padding:10px; border-radius:8px;">
-            <option value="short">Short</option>
-            <option value="medium" selected>Medium</option>
-            <option value="long">Long</option>
-          </select>
-        </div>
-        <div>
-          <label><strong>Content Area</strong></label><br>
-          <input id="llmContentArea" type="text" placeholder="e.g., Industrial Revolution, Classical Greece, Photosynthesis, Ancient Rome"
-            style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db;">
-        </div>
+    <!-- === TAB 1: DATABASE === -->
+    <div id="tab0" class="tab-content active">
+      <div class="about-box">
+        <h2>About This Database</h2>
+        <p>This database comes from the largest study of figurative language in picturebooks to date. It contains over <strong>68,000 examples</strong> of metaphors, similes, personification, and hyperbole from thousands of children's books.</p>
+        <p><strong>Column Explanations:</strong></p>
+        <ul>
+          <li><strong>Source Chain of Thought</strong>: AI explanation of the <strong>source domain</strong> (what familiar thing is being used to describe something)</li>
+          <li><strong>Target Chain of Thought</strong>: AI explanation of the <strong>target domain</strong> (the abstract idea or emotion being described)</li>
+          <li><strong>AI Short Comment</strong>: Quick quality rating + plain-language meaning</li>
+          <li><strong>Find Source</strong>: Click to search Google for read-aloud videos of the book</li>
+        </ul>
       </div>
 
-      <label><strong>Teacher Focus Area (black box)</strong></label>
-      <textarea id="llmFocus" rows="3" style="width:100%; padding:12px; border-radius:10px; background:#111827; color:#f9fafb; border:1px solid #374151; font-family:inherit;"
-        placeholder="Type focus here (e.g., prefixes un-/re-, context clues, inference, decoding multisyllabic words)"></textarea>
-
-      <div style="margin-top:14px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:12px;">
-        <strong>Include Activities:</strong>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:8px; margin-top:8px;">
-          <label><input type="checkbox" class="act-option" value="Word ladder activity" checked> Word ladder</label>
-          <label><input type="checkbox" class="act-option" value="Semantically related word lists for each target word" checked> Semantic word lists (5 per word)</label>
-          <label><input type="checkbox" class="act-option" value="Gap-fill activity" checked> Gap fill (2 per word)</label>
-          <label><input type="checkbox" class="act-option" value="Quick answer key" checked> Quick answer key</label>
-          <label><input type="checkbox" class="act-option" value="Story with comprehension questions and answer key" checked> Story + comprehension</label>
-          <label><input type="checkbox" class="act-option" value="Sentence frames activity"> Sentence frames (10 frames)</label>
-          <label><input type="checkbox" class="act-option" value="Suggested differentiation notes"> Suggested differentiation notes</label>
-        </div>
+      <div class="controls">
+        <input type="text" id="globalSearch" placeholder="Search anywhere (book title, quote, domain...)">
+        <button class="btn" onclick="exportCSV()">↓ Export Filtered CSV</button>
       </div>
 
-       <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:16px 0;">
-        <select id="llmProvider" style="padding:10px 14px; font-size:1rem; border-radius:8px;">
-          <option value="gemini" selected>Gemini</option>
-          <option value="chatgpt">ChatGPT</option>
-          <option value="claude">Claude</option>
+      <div id="loading">Loading database... (may take 10-20 seconds)</div>
+
+      <table id="dataTable" style="display:none;">
+        <thead>
+          <tr id="headerRow"></tr>
+          <tr class="filter-row" id="filterRow"></tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+
+      <div class="pagination" id="pagination" style="display:none; margin:20px 0; text-align:center;">
+        <button onclick="prevPage()">← Previous</button>
+        <span>Page <span id="currentPage">1</span> / <span id="totalPages">1</span></span>
+        <button onclick="nextPage()">Next →</button>
+        <select id="rowsPerPage" onchange="changeRowsPerPage()">
+          <option value="50">50</option>
+          <option value="100" selected>100</option>
+          <option value="250">250</option>
         </select>
-        <button onclick="generateWithLLM()" style="padding:12px 18px; font-weight:600; background:#1d4ed8; color:white; border:none; border-radius:8px; cursor:pointer;">Generate Prompt</button>
-        <button onclick="copyLLMPrompt()" style="padding:12px 18px; font-weight:600; background:#0f766e; color:white; border:none; border-radius:8px; cursor:pointer;">Copy Prompt</button>
-        <button onclick="openInLLM()" style="padding:12px 18px; font-weight:600; background:#7c3aed; color:white; border:none; border-radius:8px; cursor:pointer;">Open in Selected LLM</button>
-        <button onclick="clearLLMForm()" style="padding:12px 18px; font-weight:600; background:#dc2626; color:white; border:none; border-radius:8px; cursor:pointer;">Clear</button>
-        <button onclick="refreshPage()" style="padding:12px 18px; font-weight:600; background:#111827; color:white; border:none; border-radius:8px; cursor:pointer;">Refresh Page</button>
+      </div>
+    </div>
+
+    <!-- === TAB 2: AI LESSON GENERATOR === -->
+    <div id="tab1" class="tab-content">
+      <div class="about-box">
+        <h2>AI Lesson & Activity Generator</h2>
+        <p>Paste figurative expressions from the database (or type your own), then generate ready-to-use prompts for ChatGPT, Claude, or Gemini.</p>
       </div>
 
-      <p id="llmStatus" style="text-align:center; font-weight:600; min-height:24px;"></p>
-      <textarea id="finalPrompt" rows="16" style="width:100%; padding:14px; font-family:monospace; border:2px solid #d1d5db; border-radius:10px; background:#f9fafb;" placeholder="Generated prompt appears here..."></textarea>
+      <textarea id="llmInput" rows="8" style="width:100%; padding:12px; font-size:1rem;" placeholder="Paste figurative expressions here (one per line)"></textarea>
 
-        <!-- === EMBEDDED AI SECTION === -->
-        <hr style="margin:30px 0 20px 0;">
-        <h3 style="text-align:center; color:#1d4ed8;">🧠 Embedded Local LLM (WebLLM)</h3>
-
-        <div style="border:1px solid #e5e7eb; border-radius:12px; padding:14px; background:#f8fafc;">
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
-            <label><strong>Model:</strong></label>
-            <select id="webllmModel" style="padding:8px; border-radius:8px; min-width:320px;"></select>
-            <button id="loadWebLLMBtn" onclick="initWebLLM()"
-              style="padding:10px 14px; font-weight:600; background:#1d4ed8; color:white; border:none; border-radius:8px; cursor:pointer;">
-              Load Model
-            </button>
-            <button id="resetWebLLMBtn" onclick="resetWebLLMChat()"
-              style="padding:10px 14px; font-weight:600; background:#6b7280; color:white; border:none; border-radius:8px; cursor:pointer;">
-              Reset Chat
-            </button>
-          </div>
-
-          <p id="webllmStatus" style="margin:6px 0 12px 0; font-weight:600; color:#374151;">
-            WebLLM not loaded yet.
-          </p>
-
-          <div id="webllmChat"
-               style="height:300px; overflow:auto; background:white; border:1px solid #d1d5db; border-radius:10px; padding:10px; margin-bottom:10px;"></div>
-
-          <div style="display:flex; gap:8px;">
-            <textarea id="webllmInput" rows="3"
-              placeholder="Type a prompt..."
-              style="flex:1; padding:10px; border-radius:8px; border:1px solid #d1d5db; resize:vertical;"></textarea>
-            <button onclick="sendWebLLM()"
-              style="padding:10px 14px; font-weight:600; background:#0f766e; color:white; border:none; border-radius:8px; cursor:pointer;">
-              Send
-            </button>
-          </div>
+      <div style="margin:20px 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:15px;">
+        <div>
+          <label>Text Type:</label><br>
+          <select id="llmTextType">
+            <option value="fiction">Fiction Story</option>
+            <option value="informational">Informational Text</option>
+            <option value="both">Both</option>
+          </select>
         </div>
-
-        <footer style="text-align:center; margin-top:48px; color:#6b7280;">
-          <p>Hosted via Microsoft Excel Online</p>
-        </footer>
+        <div>
+          <label>Grade Level:</label><br>
+          <select id="llmGrade">
+            <option value="K-2">K-2</option>
+            <option value="3-5" selected>3-5</option>
+            <option value="6-8">6-8</option>
+          </select>
+        </div>
+        <div>
+          <label>Length:</label><br>
+          <select id="llmLength">
+            <option value="short">Short (150-250 words)</option>
+            <option value="medium" selected>Medium (250-450 words)</option>
+            <option value="long">Long (450-700 words)</option>
+          </select>
+        </div>
       </div>
+
+      <button class="btn" onclick="generateWithLLM()" style="margin:10px 0;">Generate Prompt</button>
+      <button class="btn" onclick="copyLLMPrompt()" style="background:#15803d;">Copy Prompt</button>
+      <button class="btn" onclick="openInLLM()" style="background:#7c3aed;">Open in ChatGPT / Claude</button>
+
+      <p id="llmStatus" style="margin:10px 0; font-weight:bold;"></p>
+
+      <textarea id="finalPrompt" rows="12" style="width:100%; padding:12px; font-size:0.95rem;" readonly></textarea>
     </div>
   </div>
 
-  <!-- Column Key Modal -->
-  <div id="columnModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Column Definitions for the BAWF Morphological Database</h2>
-        <span class="close" onclick="closeModal()">×</span>
-      </div>
-      <div class="modal-body">
-        <h3>Core Word Information</h3>
-        <ul>
-          <li><strong>Word:</strong> The surface wordform (as it appears in the dictionary and corpora)</li>
-          <li><strong>Word_frq_Zipf:</strong> Zipf frequency score of the wordform, calculated from a large English corpus (higher value = more frequent in everyday language use). A Zipf value of 1 is among the 1,000 most common words.</li>
-          <li><strong>FLemma:</strong> The lemma of the word (ignoring part of speech).</li>
-          <li><strong>GPT_Coded_Word_Parts:</strong> Morphological breakdown of the word into prefixes, root(s), and suffixes, generated by fine-tuned GPT analysis.</li>
-        </ul>
-
-        <h3>Baseword / Root Information</h3>
-        <ul>
-          <li><strong>Baseword:</strong> The central base form of the word after removing affixes.</li>
-          <li><strong>Baseword_frq_Zipf:</strong> Zipf frequency score of the baseword itself.</li>
-          <li><strong>Baseword_Family_Size:</strong> Number of different wordforms that belong to the same baseword family (excluding compounds).</li>
-          <li><strong>Baseword_FamilySize_Incl_Compounds:</strong> Number of different wordforms in the baseword family, including compounds.</li>
-          <li><strong>Baseword_Zipf_Inc_Compounds:</strong> Zipf frequency of the baseword, adjusted to include compounds.</li>
-        </ul>
-
-        <h3>Root & Etymological Information</h3>
-        <ul>
-          <li><strong>GPT_Root:</strong> The primary root identified using GPT-assisted morphological analysis.</li>
-          <li><strong>Avg_Root_Zipf_BNC_COCA:</strong> Average Zipf frequency (based on BNC-COCA data) of words sharing the same root.</li>
-          <li><strong>Root_FamilySize:</strong> Number of different wordforms sharing the same root (excluding compounds).</li>
-          <li><strong>Root_FamilySize_Inc_Compounds:</strong> Number of different wordforms sharing the same root, including compounds.</li>
-          <li><strong>Avg_Root_Zipf_Inc_Compounds:</strong> Average Zipf frequency of words sharing the root, including compounds.</li>
-        </ul>
-
-        <h3>Greek / Latin Roots</h3>
-        <ul>
-          <li><strong>Greek_Latin_Root_1:</strong> First identified classical (Greek or Latin) root.</li>
-          <li><strong>Greek_Latin_Meaning_1:</strong> Meaning of the first classical root.</li>
-          <li><strong>Greek_Latin_Root_1_FamilySize:</strong> Number of different wordforms containing this classical root.</li>
-          <li><strong>Avg_Greek_Latin_Root_1_Zipf_BNC_COCA:</strong> Average Zipf frequency of words containing the first classical root.</li>
-          <li><strong>Greek_Latin_Root_2:</strong> Second identified classical root (if present).</li>
-          <li><strong>Greek_Latin_Meaning_2:</strong> Meaning of the second classical root.</li>
-          <li><strong>Greek_Latin_Roots_FamilySize_Incl_compounds:</strong> Total family size for classical roots, including compounds.</li>
-          <li><strong>Greek_Latin_Roots_Zipf_Incl_compounds:</strong> Zipf frequency measures for classical roots, including compounds.</li>
-        </ul>
-
-        <h3>Prefixes & Suffixes</h3>
-        <ul>
-          <li><strong>Prefix_1 to Prefix_3 and Suffix_1 to Suffix_6:</strong> Include meaning, all forms, frequency, count, and mean Zipf scores.</li>
-        </ul>
-
-        <h3>Other Morphological & Psycholinguistic Measures</h3>
-        <ul>
-          <li><strong>N_Morphemes:</strong> Total number of morphemes in the word.</li>
-          <li><strong>Reading AoA (Green et al., 2025):</strong> Age of Acquisition for reading this word.</li>
-          <li><strong>Vocabulary eXpected Grade Level (Flor et al., 2024):</strong> Expected U.S. grade level.</li>
-          <li><strong>GPT_Familiarity (Brysbaert et al., 2024):</strong> GPT-estimated familiarity rating.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
   <script>
-    // ===== Init =====
-    let wordCloudReady = false;
+    // ====================== DATABASE FUNCTIONS ======================
+    let fullData = [], filteredData = [], currentPage = 1, rowsPerPage = 100;
 
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        if (typeof window.WordCloud === "function") wordCloudReady = true;
-      }, 800);
-    });
-
-    // Optional: close modal if user clicks outside modal content
-    window.addEventListener("click", (e) => {
-      const modal = document.getElementById("columnModal");
-      if (e.target === modal) closeModal();
-    });
-
-    // ===== Tabs =====
-    function openTab(tabName, btnEl) {
-      document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
-      document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
-
-      const tab = document.getElementById(tabName);
-      if (tab) tab.classList.add("active");
-      if (btnEl) btnEl.classList.add("active");
+    async function loadFromZip() {
+      // ... (same loading code as before - keep the full version from previous message)
+      // I'll assume you copy the full loadFromZip(), renderTable(), etc. from the last good version
     }
 
-    // ===== Modal =====
-    function showColumnKey() {
-      const modal = document.getElementById("columnModal");
-      if (!modal) return;
-      modal.classList.add("show");
-      document.body.classList.add("modal-open");
+    function switchTab(n) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab'+n).classList.add('active');
+      document.querySelectorAll('.tab-btn')[n].classList.add('active');
     }
 
-    function closeModal() {
-      const modal = document.getElementById("columnModal");
-      if (!modal) return;
-      modal.classList.remove("show");
-      document.body.classList.remove("modal-open");
-    }
-
-    // ===== Word Cloud =====
-    function generateWordCloud() {
-      const status = document.getElementById("cloudStatus");
-      const inputEl = document.getElementById("wordInput");
-      const canvas = document.getElementById("wordCanvas");
-
-      if (!status || !inputEl || !canvas) return;
-
-      const input = inputEl.value.trim();
-      status.style.color = "#6b7280";
-      status.textContent = "Processing...";
-
-      if (!input) {
-        status.style.color = "red";
-        status.textContent = "Please paste word-frequency data first.";
-        return;
-      }
-
-      if (typeof window.WordCloud !== "function") {
-        status.style.color = "red";
-        status.textContent = "❌ WordCloud library failed to load. Check CDN/script tag.";
-        return;
-      }
-
-      const list = [];
-      const lines = input.split(/\r?\n/);
-
-      for (let line of lines) {
-        line = line.trim();
-        if (!line) continue;
-
-        // Matches: "word 120" OR "multi word term 95.5"
-        const match = line.match(/^(.*?)\s+(-?\d*\.?\d+)$/);
-        if (!match) continue;
-
-        const word = match[1].trim();
-        const freq = parseFloat(match[2]);
-        if (word && Number.isFinite(freq) && freq > 0) {
-          list.push([word, freq]);
-        }
-      }
-
-      if (!list.length) {
-        status.style.color = "red";
-        status.textContent = "No valid data. Example: analysis 120";
-        return;
-      }
-
-      list.sort((a, b) => b[1] - a[1]);
-
-      canvas.width = 1100;
-      canvas.height = 700;
-
-      status.style.color = "#6b7280";
-      status.textContent = `Generating cloud with ${list.length} words...`;
-
-      setTimeout(() => {
-        window.WordCloud(canvas, {
-          list,
-          gridSize: 8,
-          weightFactor: 22,
-          fontFamily: "Segoe UI, Arial, sans-serif",
-          color: "random-dark",
-          rotateRatio: 0.3,
-          backgroundColor: "#ffffff",
-          minSize: 10,
-          shrinkToFit: true
-        });
-
-        status.style.color = "#15803d";
-        status.textContent = `✅ Success! ${list.length} words generated.`;
-      }, 100);
-    }
-
-    // ===== LLM Prompt Builder =====
-    function buildPromptText(words, cfg) {
-      const lenMap = {
-        short: "150–250 words per text",
-        medium: "250–450 words per text",
-        long: "450–700 words per text"
-      };
-
-      let prompt = `You are an expert literacy teacher and curriculum writer specializing in morphology instruction.\n\n`;
-      prompt += `TARGET WORDS (use ALL naturally and repeatedly):\n${words.join("\n")}\n\n`;
-      prompt += `SETTINGS:\n`;
-      prompt += `- Text type: ${cfg.textType}\n`;
-      prompt += `- Grade band: ${cfg.grade}\n`;
-      prompt += `- Length: ${lenMap[cfg.length] || lenMap.medium}\n`;
-      prompt += `- Content area/theme: ${cfg.contentArea || "General"}\n`;
-      prompt += `- Teacher focus area: ${cfg.focus || "Morphology, meaning, and usage"}\n\n`;
-
-      prompt += `REQUIRED OUTPUT:\n`;
-
-      // Text generation (only applies strongly to story/comprehension)
-      if (cfg.activities.some(a => a.includes("Story with comprehension"))) {
-        if (cfg.textType === "informational") {
-          prompt += `1) Write one engaging informational text.\n`;
-        } else if (cfg.textType === "fiction") {
-          prompt += `1) Write one engaging fiction story.\n`;
-        } else {
-          prompt += `1) Write:\n   - One worksheet\n`;
-        }
-      } else if (cfg.textType !== "Worksheet") {
-        prompt += `1) Write one ${cfg.textType} text incorporating the target words.\n`;
-      }
-
-      // Per-word requirements
-      prompt += ` For EACH target word:\n`;
-
-      // Activities
-      if (cfg.activities.length) {
-        prompt += `3) Create the following activities:\n`;
-        cfg.activities.forEach((a, i) => {
-          if (a.includes("Word ladder")) {
-            prompt += `   ${i+1}. Word ladder activity using the target words.\n`;
-          } else if (a.includes("Gap-fill")) {
-            prompt += `   ${i+1}. Gap-fill activity with 2 gaps for each target word.\n`;
-          } else if (a.includes("Sentence frames")) {
-            prompt += `   ${i+1}. 10 sentence frames using the target words.\n`;
-          } else if (a.includes("Semantic word lists")) {
-            prompt += `   ${i+1}. Semantically related word lists (already covered in per-word section).\n`;
-          } else {
-            prompt += `   ${i+1}. ${a}\n`;
-          }
-        });
-        prompt += `\n`;
-      }
-
-      prompt += `4) Teacher supports:\n`;
-      prompt += `   - Suggested teacher notes (below/at/above level)\n`;
-      prompt += `   - Printable-friendly formatting with clear headings and sections\n\n`;
-
-      prompt += `Use clear, engaging, classroom-ready language appropriate for the grade level.`;
-      return prompt;
-    }
-
+    // ====================== AI GENERATOR FUNCTIONS ======================
     function generateWithLLM() {
-      const raw = document.getElementById("llmInput")?.value.trim() || "";
+      const raw = document.getElementById("llmInput").value.trim();
       const status = document.getElementById("llmStatus");
       const out = document.getElementById("finalPrompt");
 
       if (!raw) {
         status.style.color = "red";
-        status.textContent = "❌ Please paste target words first.";
+        status.textContent = "Please enter some figurative expressions.";
         return;
       }
 
-      const words = raw.split(/\r?\n|,/).map(w => w.trim()).filter(Boolean);
-      const activities = Array.from(document.querySelectorAll(".act-option:checked")).map(el => el.value);
-
+      const expressions = raw.split(/\r?\n/).map(w => w.trim()).filter(Boolean);
       const cfg = {
-        textType: document.getElementById("llmTextType")?.value || "both",
-        grade: document.getElementById("llmGrade")?.value || "4–6",
-        length: document.getElementById("llmLength")?.value || "medium",
-        contentArea: document.getElementById("llmContentArea")?.value.trim() || "",
-        focus: document.getElementById("llmFocus")?.value.trim() || "",
-        activities
+        textType: document.getElementById("llmTextType").value,
+        grade: document.getElementById("llmGrade").value,
+        length: document.getElementById("llmLength").value
       };
 
-      out.value = buildPromptText(words, cfg);
+      let prompt = `You are an expert children's literature and literacy teacher.\n\n`;
+      prompt += `Create rich, classroom-ready materials using these figurative language examples:\n\n`;
+      prompt += expressions.join("\n") + "\n\n";
+      prompt += `Requirements:\n`;
+      prompt += `- Grade level: ${cfg.grade}\n`;
+      prompt += `- Text type: ${cfg.textType}\n`;
+      prompt += `- Create engaging texts and activities that help children understand the metaphors/similes/etc.\n`;
+      prompt += `- Include discussion questions and extension activities.\n`;
+
+      out.value = prompt;
       status.style.color = "#15803d";
-      status.textContent = `✅ Prompt ready (${words.length} words, ${activities.length} activities).`;
+      status.textContent = `✅ Prompt generated (${expressions.length} expressions)`;
     }
 
     function copyLLMPrompt() {
-      const out = document.getElementById("finalPrompt");
-      const status = document.getElementById("llmStatus");
-      if (!out || !status) return;
-
-      const text = out.value.trim();
-      if (!text) {
-        status.style.color = "red";
-        status.textContent = "❌ Generate a prompt first.";
-        return;
-      }
-
+      const text = document.getElementById("finalPrompt").value;
       navigator.clipboard.writeText(text).then(() => {
-        status.style.color = "#15803d";
-        status.textContent = "✅ Prompt copied.";
-      }).catch(() => {
-        status.style.color = "red";
-        status.textContent = "❌ Copy failed. Please copy manually.";
+        document.getElementById("llmStatus").textContent = "✅ Prompt copied to clipboard!";
       });
     }
 
     function openInLLM() {
-      const prompt = document.getElementById("finalPrompt")?.value.trim() || "";
-      const provider = document.getElementById("llmProvider")?.value || "chatgpt";
-      const status = document.getElementById("llmStatus");
-
-      if (!status) return;
-
-      if (!prompt) {
-        status.style.color = "red";
-        status.textContent = "❌ Generate a prompt first.";
-        return;
-      }
-
-      const w = window.open("about:blank", "_blank");
-      if (!w) {
-        status.style.color = "red";
-        status.textContent = "❌ Popup blocked. Allow popups, then try again.";
-        return;
-      }
-
-      const encoded = encodeURIComponent(prompt);
-      let url = "https://chatgpt.com/";
-      if (provider === "gemini") url = `https://gemini.google.com/app?prompt=${encoded}`;
-      if (provider === "chatgpt") url = `https://chatgpt.com/?q=${encoded}`;
-      if (provider === "claude") url = "https://claude.ai/new";
-
-      w.location.href = url;
-
-      navigator.clipboard.writeText(prompt).then(() => {
-        status.style.color = "#15803d";
-        status.textContent = "✅ Opened new tab. Prompt copied — paste if not auto-filled.";
-      }).catch(() => {
-        status.style.color = "#15803d";
-        status.textContent = "✅ Opened new tab. Paste prompt manually if needed.";
-      });
+      const prompt = document.getElementById("finalPrompt").value;
+      if (!prompt) return;
+      window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank");
     }
 
-    function clearLLMForm() {
-      const ids = ["llmInput", "llmContentArea", "llmFocus", "finalPrompt"];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = "";
-      });
-
-      const status = document.getElementById("llmStatus");
-      if (status) status.textContent = "";
-    }
-
-    function refreshPage() {
-      location.reload();
-    }
+    // Initialize
+    window.onload = () => {
+      loadFromZip();   // your database loader
+    };
   </script>
-<script type="module">
-  import * as webllm from "https://esm.run/@mlc-ai/web-llm";
-
-  let engine = null;
-  let messages = [
-    { role: "system", content: "You are a helpful literacy assistant for teachers." }
-  ];
-
-  const statusEl = () => document.getElementById("webllmStatus");
-  const modelEl = () => document.getElementById("webllmModel");
-  const chatEl = () => document.getElementById("webllmChat");
-  const inputEl = () => document.getElementById("webllmInput");
-  const loadBtnEl = () => document.getElementById("loadWebLLMBtn");
-
-  function isChatCapableModelId(id = "") {
-    const s = id.toLowerCase();
-    return !s.includes("embed") && !s.includes("embedding") && !s.includes("rerank");
-  }
-
-  function addChat(role, text) {
-    const wrap = document.createElement("div");
-    wrap.style.margin = "8px 0";
-    wrap.innerHTML = `<strong>${role}:</strong> <span></span>`;
-    const span = wrap.querySelector("span");
-    span.textContent = text;
-    chatEl().appendChild(wrap);
-    chatEl().scrollTop = chatEl().scrollHeight;
-    return span;
-  }
-
-  function setStatus(msg, color = "#374151") {
-    const el = statusEl();
-    if (el) {
-      el.textContent = msg;
-      el.style.color = color;
-    }
-  }
-
-  function populateModels() {
-    const list = (webllm.prebuiltAppConfig?.model_list || [])
-      .filter(m => isChatCapableModelId(m.model_id));
-
-    const select = modelEl();
-    select.innerHTML = "";
-
-    if (!list.length) {
-      const opt = document.createElement("option");
-      opt.textContent = "No chat models available";
-      select.appendChild(opt);
-      return;
-    }
-
-    const sorted = [...list].sort((a, b) => {
-      const getSize = m => parseFloat(m.model_id.match(/(\d+\.?\d*)/)?.[1] || 999);
-      return getSize(a) - getSize(b);
-    });
-
-    sorted.forEach(model => {
-      const opt = document.createElement("option");
-      opt.value = model.model_id;
-      const vram = model.vram_required_MB ? ` ~${Math.round(model.vram_required_MB / 1024)}GB` : "";
-      opt.textContent = `${model.model_id}${vram}`;
-      select.appendChild(opt);
-    });
-  }
-
-  async function initWebLLMInternal() {
-    if (!window.isSecureContext) {
-      setStatus("❌ WebLLM needs HTTPS (or localhost)", "red");
-      return;
-    }
-    if (!navigator.gpu) {
-      setStatus("❌ WebGPU not available in this browser/device", "red");
-      return;
-    }
-
-    const selected = modelEl().value;
-    if (!selected) {
-      setStatus("❌ Please select a model first", "red");
-      return;
-    }
-
-    if (!isChatCapableModelId(selected)) {
-      setStatus("❌ Selected model is not a chat model. Please choose an Instruct/Chat model.", "red");
-      return;
-    }
-
-    loadBtnEl().disabled = true;
-    setStatus("Loading model... (first time can take 30–180 seconds)", "#1d4ed8");
-
-    try {
-      engine = await webllm.CreateMLCEngine(selected, {
-        initProgressCallback: (report) => {
-          const pct = report.progress ? ` ${(report.progress * 100).toFixed(0)}%` : "";
-          setStatus(`Loading ${selected}... ${report.text || ""}${pct}`, "#1d4ed8");
-        }
-      });
-
-      setStatus(`✅ Model loaded: ${selected}`, "#15803d");
-      addChat("System", `Model ready: ${selected}`);
-    } catch (err) {
-      console.error(err);
-      setStatus(`❌ Failed to load model: ${err?.message || err}`, "red");
-    } finally {
-      loadBtnEl().disabled = false;
-    }
-  }
-
-  async function sendWebLLMInternal() {
-    if (!engine) {
-      setStatus("❌ Load a model first.", "red");
-      return;
-    }
-
-    const userText = inputEl().value.trim();
-    if (!userText) return;
-
-    inputEl().value = "";
-    addChat("You", userText);
-    messages.push({ role: "user", content: userText });
-
-    const assistantSpan = addChat("AI", "");
-    let acc = "";
-
-    try {
-      const stream = await engine.chat.completions.create({
-        messages,
-        stream: true,
-        temperature: 0.7
-      });
-
-      for await (const chunk of stream) {
-        const token = chunk?.choices?.[0]?.delta?.content || "";
-        acc += token;
-        assistantSpan.textContent = acc;
-        chatEl().scrollTop = chatEl().scrollHeight;
-      }
-
-      messages.push({ role: "assistant", content: acc || "(No output)" });
-      setStatus("✅ Response complete.", "#15803d");
-    } catch (err) {
-      console.error("WebLLM generation error:", err);
-      setStatus(`❌ Generation failed: ${err?.message || err}`, "red");
-    }
-  }
-
-  function resetWebLLMChatInternal() {
-    messages = [
-      { role: "system", content: "You are a helpful literacy assistant for teachers." }
-    ];
-    chatEl().innerHTML = "";
-    setStatus("Chat reset.", "#374151");
-  }
-
-  window.initWebLLM = initWebLLMInternal;
-  window.sendWebLLM = sendWebLLMInternal;
-  window.resetWebLLMChat = resetWebLLMChatInternal;
-
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      populateModels();
-      setStatus("Select a model, then click 'Load Model'.", "#374151");
-    }, 600);
-  });
-</script>
-
 </body>
 </html>
